@@ -1,14 +1,13 @@
-package ru.arlekk1ng.model;
+package ru.arlekk1ng.model.parrot;
 
-public class Parrot {
-    private String name;
+import org.springframework.stereotype.Component;
+
+@Component("parrotKesha")
+public class ParrotKesha implements Parrot {
+    private String name = "Kesha";
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

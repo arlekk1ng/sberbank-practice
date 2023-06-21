@@ -1,29 +1,25 @@
 package ru.arlekk1ng.model;
 
-import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import ru.arlekk1ng.model.parrot.Parrot;
 
 @Component
 public class Person {
     private String name = "Vasiliy";
-    @Autowired
-    private Parrot parrot1;
-    private Parrot parrot2;
-    @Autowired
+    private Parrot parrot1, parrot2;
     private Cat cat;
-    @Autowired
     private Dog dog;
 
-    public Person(@Qualifier("parrot2") Parrot parrot) {
-        this.parrot2 = parrot;
+    @Autowired
+    public Person(@Qualifier("parrotKesha") Parrot parrot1, @Qualifier("parrotArkasha") Parrot parrot2,
+                  Cat cat, Dog dog) {
+        this.parrot1 = parrot1;
+        this.parrot2 = parrot2;
+        this.cat = cat;
+        this.dog = dog;
     }
-
-//    @PostConstruct
-//    private void initParrot2() {
-//        this.parrot2 = parrot2;
-//    }
 
     @Override
     public String toString() {
