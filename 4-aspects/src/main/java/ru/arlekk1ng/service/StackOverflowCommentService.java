@@ -6,40 +6,56 @@ import org.springframework.stereotype.Service;
 import ru.arlekk1ng.aspect.NotEmpty;
 
 /**
- * Класс приложения
+ * Класс сервиса по публикации комментариев на StackOverflow
  */
 @Service
 public class StackOverflowCommentService implements CommentService {
 
     @NotEmpty
-    public void publishComment(String comment) {
+    public boolean publishComment(String comment) {
+        // ..
+        return true;
     }
 
     @NotEmpty
-    public void publishComment(String comment, LocalDate date) {
+    public boolean publishComment(String comment, LocalDate date) {
+        // ..
+        return true;
     }
 
     @NotEmpty
-    public void publishComment(String comment, String author) {
+    public boolean publishComment(String comment, String author) {
+        // ..
+        return true;
     }
 
     @NotEmpty
-    public void publishComment(String comment, String author, LocalDate date) {
+    public boolean publishComment(String comment, String author, LocalDate date) {
+        // ..
+        return true;
     }
 
     @NotEmpty
-    public void publishComments(Collection<String> comments) {
+    public boolean publishComments(Collection<String> comments) {
+        // ..
+        return true;
     }
 
     @NotEmpty
-    public void publishComments(Collection<String> comments, LocalDate date) {
+    public boolean publishComments(Collection<String> comments, LocalDate date) {
+        // ..
+        return true;
     }
 
     @NotEmpty
-    public void publishComments(Collection<String> comments, String author) {
+    public boolean publishComments(Collection<String> comments, String author) {
+        // ..
+        return true;
     }
 
     @NotEmpty
-    public void publishComments(Collection<String> comments, String author, LocalDate date) {
+    public boolean publishComments(Collection<String> comments, String author, LocalDate date) {
+        // ..
+        return true;
     }
 }

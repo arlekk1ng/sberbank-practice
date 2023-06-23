@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Аннотация, необходимая для выполнения аспекта приложения
+ * Аннотация, которая проверяет аргументы метода на null или пустоту
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

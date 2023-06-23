@@ -1,51 +1,33 @@
 package ru.arlekk1ng.aspect;
 
 import java.util.Collection;
-import java.util.logging.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import ru.arlekk1ng.exception.EmptyMethodArgumentException;
 
 /**
- * Класс аспекта приложения, который проверяет аргументы методов, помеченных аннотацией NotEmpty
+ * Аспект сервиса, который проверяет аргументы методов, помеченных аннотацией {@link NotEmpty}, на null или пустоту
  */
 @Aspect
 @Component
-@Primary
-public class StringOrCollectionMethodArgumentNotEmptyAspect implements MethodArgumentAspect {
-    private Logger aspectLogger = Logger.getLogger(
-            StringOrCollectionMethodArgumentNotEmptyAspect.class.getName());
-
-    private void writeToAspectLoggerAndThrowEmptyMethodArgumentException(String message)
-            throws EmptyMethodArgumentException {
-        aspectLogger.warning(message);
-        throw new EmptyMethodArgumentException(message);
-    }
+public class StringOrCollectionMethodArgumentNotEmptyAspect {
 
     @Before("@annotation(NotEmpty)")
     public void checkMethodArguments(JoinPoint joinPoint) throws EmptyMethodArgumentException {
         for (Object arg: joinPoint.getArgs()) {
             if (arg == null) {
-                writeToAspectLoggerAndThrowEmptyMethodArgumentException(
-                        "В аргументах метода присутсвует null");
+                throw new EmptyMethodArgumentException("В аргументах метода присутствует null");
             } else if (arg instanceof String string) {
                 if (string.isEmpty()) {
-                    writeToAspectLoggerAndThrowEmptyMethodArgumentException(
-                            "В аргументах метода присутсвует пустая строка");
+                    throw new EmptyMethodArgumentException("В аргументах метода присутствует пустая строка");
                 }
             } else if (arg instanceof Collection collection) {
                 if (collection.isEmpty()) {
-                    writeToAspectLoggerAndThrowEmptyMethodArgumentException(
-                            "В аргументах метода присутсвует пустая коллекция");
+                    throw new EmptyMethodArgumentException("В аргументах метода присутствует пустая коллекция");
                 }
             }
         }
-    }
-
-    public void setAspectLogger(Logger aspectLogger) {
-        this.aspectLogger = aspectLogger;
     }
 }
