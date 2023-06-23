@@ -5,6 +5,9 @@ import java.util.Collection;
 import org.springframework.stereotype.Service;
 import ru.arlekk1ng.aspect.NotEmpty;
 
+/**
+ * Класс приложения
+ */
 @Service
 public class StackOverflowCommentService implements CommentService {
 

@@ -4,6 +4,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+/**
+ * Класс конфигурации контекста приложения
+ */
 @Configuration
 @ComponentScan(basePackages = {"ru.arlekk1ng.aspect", "ru.arlekk1ng.service"})
 @EnableAspectJAutoProxy
