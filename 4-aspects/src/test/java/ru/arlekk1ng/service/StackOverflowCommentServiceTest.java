@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.arlekk1ng.aspect.MethodArgumentAspect;
 import ru.arlekk1ng.config.ProjectConfig;
+import ru.arlekk1ng.exception.EmptyMethodArgumentException;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { ProjectConfig.class })
@@ -57,7 +57,7 @@ public class StackOverflowCommentServiceTest {
             commentService.publishComment(notEmptyString, emptyString);
         };
 
-        assertThrows(UndeclaredThrowableException.class, executable);
+        assertThrows(EmptyMethodArgumentException.class, executable);
         verify(aspectLogger).warning("В аргументах метода присутсвует пустая строка");
     }
 
@@ -70,7 +70,7 @@ public class StackOverflowCommentServiceTest {
             commentService.publishComment(notEmptyString, nullString, localDate);
         };
 
-        assertThrows(UndeclaredThrowableException.class, executable);
+        assertThrows(EmptyMethodArgumentException.class, executable);
         verify(aspectLogger).warning("В аргументах метода присутсвует null");
     }
 
@@ -91,7 +91,7 @@ public class StackOverflowCommentServiceTest {
             commentService.publishComments(emptyCollection, localDate);
         };
 
-        assertThrows(UndeclaredThrowableException.class, executable);
+        assertThrows(EmptyMethodArgumentException.class, executable);
         verify(aspectLogger).warning("В аргументах метода присутсвует пустая коллекция");
     }
 
@@ -104,7 +104,7 @@ public class StackOverflowCommentServiceTest {
             commentService.publishComments(nullCollection, notEmptyString, localDate);
         };
 
-        assertThrows(UndeclaredThrowableException.class, executable);
+        assertThrows(EmptyMethodArgumentException.class, executable);
         verify(aspectLogger).warning("В аргументах метода присутсвует null");
     }
 }
