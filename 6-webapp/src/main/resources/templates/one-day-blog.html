@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Блог</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header>
+
+    <table class="two-cols">
+        <tr>
+            <td><h1 class="page-title">Блог</h1></td>
+
+            <td class="right-col">
+                <form action="/blog" method="post">
+                    <input type="text" name="search">
+                    <button type="submit">Поиск</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</header>
+<main>
+    <div th:insert="~{all-days-blog.html :: ${day}}"></div>
+
+    <aside class="partnership">
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Тут могла быть ваша реклама</a>
+    </aside>
+</main>
+<footer class="site-footer">
+    <div class="container">
+        <p>© arlekk1ng, 2023</p>
+        <!--
+        <p>Блог</p>
+        -->
+    </div>
+</footer>
+</body>
+</html>
