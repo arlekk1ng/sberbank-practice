@@ -16,17 +16,13 @@
             <td class="right-col">
                 <form action="/blog" method="post">
 
-                    <select name="entry">
+                    <select name="fragmentName">
                         <option value="">Выбрать запись блога</option>
-                        <option th:each="entry : ${entries}"
-                                th:value="${entry}"
-                                th:text="${entry}">
+                        <option th:each="p : ${posts}"
+                                th:value="${p.fragmentName}"
+                                th:text="${p.text}">
                         </option>
                     </select>
-
-                    <!-- строка поиска
-                    <input type="text" name="search">
-                    -->
 
                     <button type="submit">Поиск</button>
                 </form>
@@ -36,7 +32,7 @@
 
 </header>
 <main>
-    <div th:insert="~{all-days-blog.html :: ${day}}"></div>
+    <div th:insert="~{blog-posts.html :: ${fragment}}"></div>
 
     <aside class="partnership">
         <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Тут могла быть ваша реклама</a>

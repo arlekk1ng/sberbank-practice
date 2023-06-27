@@ -1,77 +1,45 @@
 package ru.arlekk1ng.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ru.arlekk1ng.service.BlogService;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.arlekk1ng.entity.BlogPost;
+import ru.arlekk1ng.service.BlogPostsService;
 
 @Controller
 public class ApplicationController {
-    private final BlogService blogService;
+    private final BlogPostsService blogPostsService;
+    private final BlogPost MAIN = new BlogPost("main", "На главную");
 
-    private final String MAIN_ENTRY = "day-all";
-
-    public ApplicationController(BlogService blogService) {
-        this.blogService = blogService;
+    public ApplicationController(BlogPostsService blogPostsService) {
+        this.blogPostsService = blogPostsService;
     }
 
-    /**
-     * Возвращает шаблон с выбранным днем из блога.
-     * @param entry
-     * @param page
-     * @return
-     */
     @PostMapping("/blog")
     public String blog(
-            @RequestParam String entry,
+            @RequestParam String fragmentName,
             Model page
     ) {
-        if (entry.isEmpty() || entry.equals(MAIN_ENTRY)) {
+        if (fragmentName.equals(MAIN.getFragmentName()) || fragmentName.isEmpty()) {
             return blog(page);
         }
 
-        List<String> blogDaysStrings = new ArrayList<>(
-                List.of(blogService.getBlogDays(true))
-        );
-        blogDaysStrings.add(0, MAIN_ENTRY);
-        blogDaysStrings.remove(entry);
+        List<BlogPost> blogPosts = blogPostsService.findAll();
+        blogPosts.removeIf(blogPost -> blogPost.getFragmentName().equals(fragmentName));
+        blogPosts.add(0, MAIN);
 
-        page.addAttribute("entries", blogDaysStrings);
-        page.addAttribute("day", entry);
-        return "one-day-blog.html";
+        page.addAttribute("posts", blogPosts);
+        page.addAttribute("fragment", fragmentName);
+
+        return "blog-post.html";
     }
 
     @GetMapping("/blog")
     public String blog(Model page) {
-        page.addAttribute("entries", blogService.getBlogDays(true));
-        return "all-days-blog.html";
+        page.addAttribute("posts", blogPostsService.findAll());
+        return "blog-posts.html";
     }
-
-//    /**
-//     * Возвращает шаблон с днем из блога, если он присутствует.
-//     * В ином случае, возвращает шаблон со всеми днями блога.
-//     * @param search
-//     * @param page
-//     * @return
-//     */
-//    @PostMapping("/blog")
-//    public String blog(
-//            @RequestParam String search,
-//            Model page
-//    ) {
-//        search = search.toLowerCase();
-//        String[] blogDays = blogService.getBlogDays();
-//
-//        for (String day: blogDays) {
-//            if (search.contains(day) && search.contains("day")) {
-//                page.addAttribute("day", "day-" + day);
-//                return "one-day-blog.html";
-//            }
-//        }
-//
-//        return blog(page);
-//    }
 }

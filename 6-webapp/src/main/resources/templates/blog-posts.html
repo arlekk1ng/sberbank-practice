@@ -16,19 +16,15 @@
           <td class="right-col">
             <form action="/blog" method="post">
 
-              <select name="entry">
+              <select name="fragmentName">
                 <option value="">Выбрать запись блога</option>
-                <option th:each="entry : ${entries}"
-                        th:value="${entry}"
-                        th:text="${entry}">
+                <option th:each="post : ${posts}"
+                        th:value="${post.fragmentName}"
+                        th:text="${post.text}">
                 </option>
               </select>
 
-              <!-- строка поиска
-              <input type="text" name="search">
-              -->
-
-              <button type="submit">Поиск</button>
+              <button type="submit">Перейти</button>
             </form>
           </td>
         </tr>
