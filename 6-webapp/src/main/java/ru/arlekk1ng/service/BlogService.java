@@ -2,5 +2,5 @@ package ru.arlekk1ng.service;
 
 public interface BlogService {
 
-    String[] getBlogDays();
+    String[] getBlogDays(boolean fragmentPrefix);
 }

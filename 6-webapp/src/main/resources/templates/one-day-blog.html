@@ -15,7 +15,19 @@
 
             <td class="right-col">
                 <form action="/blog" method="post">
+
+                    <select name="entry">
+                        <option value="">Выбрать запись блога</option>
+                        <option th:each="entry : ${entries}"
+                                th:value="${entry}"
+                                th:text="${entry}">
+                        </option>
+                    </select>
+
+                    <!-- строка поиска
                     <input type="text" name="search">
+                    -->
+
                     <button type="submit">Поиск</button>
                 </form>
             </td>

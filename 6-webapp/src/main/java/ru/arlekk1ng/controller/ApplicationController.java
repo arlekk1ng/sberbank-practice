@@ -5,88 +5,73 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.arlekk1ng.service.BlogService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class ApplicationController {
     private final BlogService blogService;
+
+    private final String MAIN_ENTRY = "day-all";
 
     public ApplicationController(BlogService blogService) {
         this.blogService = blogService;
     }
 
     /**
-     * Возвращает шаблон с днем из блога, если он присутствует.
-     * В ином случае, возвращает шаблон со всеми днями блога.
-     * @param search
+     * Возвращает шаблон с выбранным днем из блога.
+     * @param entry
      * @param page
      * @return
      */
     @PostMapping("/blog")
     public String blog(
-            @RequestParam String search,
+            @RequestParam String entry,
             Model page
     ) {
-        search = search.toLowerCase();
-        String[] blogDays = blogService.getBlogDays();
-
-        for (String day: blogDays) {
-            if (search.contains(day) && search.contains("day")) {
-                page.addAttribute("day", "day-" + day);
-                return "one-day-blog.html";
-            }
+        if (entry.isEmpty() || entry.equals(MAIN_ENTRY)) {
+            return blog(page);
         }
 
-        return blog(page);
+        List<String> blogDaysStrings = new ArrayList<>(
+                List.of(blogService.getBlogDays(true))
+        );
+        blogDaysStrings.add(0, MAIN_ENTRY);
+        blogDaysStrings.remove(entry);
+
+        page.addAttribute("entries", blogDaysStrings);
+        page.addAttribute("day", entry);
+        return "one-day-blog.html";
     }
 
     @GetMapping("/blog")
     public String blog(Model page) {
+        page.addAttribute("entries", blogService.getBlogDays(true));
         return "all-days-blog.html";
     }
 
+//    /**
+//     * Возвращает шаблон с днем из блога, если он присутствует.
+//     * В ином случае, возвращает шаблон со всеми днями блога.
+//     * @param search
+//     * @param page
+//     * @return
+//     */
 //    @PostMapping("/blog")
 //    public String blog(
 //            @RequestParam String search,
 //            Model page
 //    ) {
-//        return search + "-template.html";
-//    }
+//        search = search.toLowerCase();
+//        String[] blogDays = blogService.getBlogDays();
 //
-//    @GetMapping("/blog")
-//    public String blog(Model page) {
-//        return "blog-template.html";
-//    }
-
-//    @PostMapping("/home")
-//    public String home(
-//            @RequestParam String name,
-//            Model page
-//    ) {
-//        page.addAttribute("username", name);
-//        return "home-template";
-//    }
+//        for (String day: blogDays) {
+//            if (search.contains(day) && search.contains("day")) {
+//                page.addAttribute("day", "day-" + day);
+//                return "one-day-blog.html";
+//            }
+//        }
 //
-//    @GetMapping("/home")
-//    public String home(Model page) {
-//        page.addAttribute("username", "ГетАноним");
-//        return "home-template";
-//    }
-
-//    @RequestMapping("/home/{name}")
-//    public String home(
-//            @PathVariable String name,
-//            Model page
-//    ) {
-//        page.addAttribute("username", name);
-//        return "home-template.html";
-//    }
-
-//    @RequestMapping("/home")
-//    public String home(
-//            @RequestParam(required = false) String name,
-//            Model page
-//    ) {
-//        page.addAttribute("username",
-//                name != null ? name : "Аноним");
-//        return "home-template.html";
+//        return blog(page);
 //    }
 }
