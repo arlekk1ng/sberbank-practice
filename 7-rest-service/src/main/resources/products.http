@@ -1,0 +1,54 @@
+###
+GET localhost:8080/products
+
+###
+GET localhost:8080/products?name=Персик
+
+###
+GET localhost:8080/products/2
+
+###
+GET localhost:8080/products/100
+
+###
+POST localhost:8080/products
+Content-Type: application/json
+
+{
+  "name": "Морковь",
+  "price": 70,
+  "count": 3
+}
+
+###
+PUT localhost:8080/products
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Банан",
+  "price": 80,
+  "count": 10
+}
+
+###
+DELETE localhost:8080/products/2
+
+### basket
+
+###
+GET localhost:8080/basket
+
+###
+POST localhost:8080/basket
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Яблоко",
+  "price": 50,
+  "count": 3
+}
+
+###
+DELETE localhost:8080/basket/delete/1
