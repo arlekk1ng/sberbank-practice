@@ -1,15 +1,16 @@
 package ru.arlekk1ng.controller;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.arlekk1ng.entity.Product;
 import ru.arlekk1ng.repository.ProductRepository;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
 @RestController
-@RequestMapping("products")
+@RequestMapping("product")
 public class ProductController {
     private ProductRepository productRepository;
 
@@ -17,18 +18,9 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProducts(@PathVariable long id) {
-        Optional<Product> product = productRepository.findById(id);
-        if (product.isPresent()) {
-            return ResponseEntity.ok().body(product.get());
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable long id) {
-        boolean isDeleted = productRepository.deleteById(id);
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable long productId) {
+        boolean isDeleted = productRepository.deleteById(productId);
         if (isDeleted) {
             return ResponseEntity.noContent().build();
         }
@@ -36,18 +28,30 @@ public class ProductController {
     }
 
     @PutMapping
-    public Product updateProduct(@RequestBody Product product) {
-        productRepository.update(product);
-        return product;
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+        boolean isUpdated = productRepository.update(product);
+        if (isUpdated) {
+            return ResponseEntity.ok().body(product);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @PostMapping
-    public long addProduct(@RequestBody Product product) {
-        return productRepository.save(product);
+    @GetMapping("/{productId}")
+    public ResponseEntity<Product> getProduct(@PathVariable long productId) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if (optionalProduct.isPresent()) {
+            return ResponseEntity.ok().body(optionalProduct.get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping
     public List<Product> getProducts(@RequestParam(required = false) String name) {
         return productRepository.findAll(name);
+    }
+
+    @PostMapping
+    public long addProduct(@RequestParam String name, @RequestParam double price) {
+        return productRepository.save(name, BigDecimal.valueOf(price));
     }
 }

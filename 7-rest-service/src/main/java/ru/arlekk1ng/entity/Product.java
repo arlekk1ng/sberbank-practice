@@ -1,8 +1,8 @@
 package ru.arlekk1ng.entity;
 
-import java.math.BigDecimal;
-
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 public class Product {
@@ -11,12 +11,14 @@ public class Product {
     private long id;
     private String name;
     private BigDecimal price;
-    private int count;
 
-    public Product(String name, BigDecimal price, int count) {
-        this.id = nextId++;
+    public Product(String name, BigDecimal price) {
+        this.id = getNextId();
         this.name = name;
         this.price = price;
-        this.count = count;
+    }
+
+    private static long getNextId() {
+        return nextId++;
     }
 }

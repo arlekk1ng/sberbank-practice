@@ -1,54 +1,83 @@
-###
-GET localhost:8080/products
+### Добавление продукта
+POST localhost:8080/product?name=Морковь&price=70
 
-###
-GET localhost:8080/products?name=Персик
+### Список всех продуктов
+GET localhost:8080/product
 
-###
-GET localhost:8080/products/2
+### Список продуктов по подстроке
+GET localhost:8080/product?name=Ябло
 
-###
-GET localhost:8080/products/100
+### Получение продукта по id
+GET localhost:8080/product/1
 
-###
-POST localhost:8080/products
-Content-Type: application/json
-
-{
-  "name": "Морковь",
-  "price": 70,
-  "count": 3
-}
-
-###
-PUT localhost:8080/products
+### Изменение продукта по id
+PUT localhost:8080/product
 Content-Type: application/json
 
 {
   "id": 1,
   "name": "Банан",
-  "price": 80,
-  "count": 10
+  "price": 80
 }
 
-###
-DELETE localhost:8080/products/2
+### Удаление продукта по id
+DELETE localhost:8080/product/1
 
-### basket
 
-###
-GET localhost:8080/basket
 
-###
-POST localhost:8080/basket
+### Регистрация клиента
+POST localhost:8080/client
+Content-Type: application/json
+
+{
+  "name": "Илья",
+  "login": "ilya",
+  "password": "bazhenov",
+  "email": "i1@yandex.ru",
+  "cart": {
+    "promoCode": "1xBet",
+    "productCountList": [
+      {
+        "product": {
+          "name": "iPhone",
+          "price": 100000
+        },
+        "count": 2
+      }
+    ]
+  }
+}
+
+### Получение клиента по id
+GET localhost:8080/client/1
+
+### Удаление клиента по id
+DELETE localhost:8080/client/1
+
+
+
+### Список всех продуктовых корзин
+GET localhost:8080/cart
+
+### Добавление продукта в корзину по id корзины
+POST localhost:8080/cart/1
 Content-Type: application/json
 
 {
   "id": 1,
-  "name": "Яблоко",
-  "price": 50,
-  "count": 3
+  "name": "iPhone",
+  "price": 100000
 }
 
-###
-DELETE localhost:8080/basket/delete/1
+### Удаление продукта из корзины по id корзины и id продукта
+DELETE localhost:8080/cart/1/product/1
+
+### Изменение количества продукта в корзине на count
+PATCH localhost:8080/cart/1?count=10
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "iPhone",
+  "price": 100000
+}
