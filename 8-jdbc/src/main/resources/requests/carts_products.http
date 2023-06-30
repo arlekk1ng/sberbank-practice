@@ -1,0 +1,9 @@
+### Создание cartproduct
+POST localhost:8080/cartproduct
+Content-Type: application/json
+
+{
+  "cartId": 4,
+  "productId": 1,
+  "productCount": 2
+}
