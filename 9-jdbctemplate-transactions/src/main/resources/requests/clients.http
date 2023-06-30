@@ -12,5 +12,8 @@ Content-Type: application/json
 ### Получение клиента по его id
 GET localhost:8080/client/1
 
+### Получение списка клиентов
+GET localhost:8080/client
+
 ### Удаление клиента по его id
 DELETE localhost:8080/client/1

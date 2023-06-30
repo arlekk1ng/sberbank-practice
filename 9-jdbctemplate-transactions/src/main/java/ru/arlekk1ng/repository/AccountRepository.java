@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface AccountRepository {
 
+    boolean save(Account account);
     Optional<Account> findByClientId(long clientId);
     List<Account> findAll();
     boolean changeBalance(long clientId, BigDecimal balance);

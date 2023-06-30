@@ -1,0 +1,15 @@
+### Оплата товаров клиента по его id
+POST localhost:8080/client/1/transfer
+
+
+### Создание аккаунта
+POST localhost:8080/account
+Content-Type: application/json
+
+{
+  "clientId": 1,
+  "balance": 100
+}
+
+### Получение списка аккаунтов
+GET localhost:8080/account

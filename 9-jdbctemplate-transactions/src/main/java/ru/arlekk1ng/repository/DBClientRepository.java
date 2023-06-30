@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import ru.arlekk1ng.entity.Cart;
 import ru.arlekk1ng.entity.Client;
 
 import java.sql.*;
@@ -55,20 +54,20 @@ public class DBClientRepository implements ClientRepository, JDBCRepository {
             return preparedStatement;
         };
 
-        RowMapper<Client> rowMapperClient = (resultSet, rows) -> {
-            int id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
-            String email = resultSet.getString("email");
-            String login = resultSet.getString("login");
-            String password = resultSet.getString("password");
-            int cartId = resultSet.getInt("cart_id");
-
-            return new Client(id, name, email, login, password, cartId);
-        };
+        RowMapper<Client> rowMapperClient = getRowMapperClient();
 
         List<Client> clientList = jdbcTemplate.query(preparedStatementCreator, rowMapperClient);
 
         return clientList.stream().findFirst();
+    }
+
+    @Override
+    public List<Client> findAll() {
+        String selectSql = "SELECT * FROM CLIENTS";
+
+        RowMapper<Client> rowMapperClient = getRowMapperClient();
+
+        return jdbcTemplate.query(selectSql, rowMapperClient);
     }
 
     @Override
@@ -84,5 +83,18 @@ public class DBClientRepository implements ClientRepository, JDBCRepository {
         int rows = jdbcTemplate.update(preparedStatementCreator);
 
         return rows > 0;
+    }
+
+    private static RowMapper<Client> getRowMapperClient() {
+        return (resultSet, rows) -> {
+            int id = resultSet.getInt("id");
+            String name = resultSet.getString("name");
+            String email = resultSet.getString("email");
+            String login = resultSet.getString("login");
+            String password = resultSet.getString("password");
+            int cartId = resultSet.getInt("cart_id");
+
+            return new Client(id, name, email, login, password, cartId);
+        };
     }
 }

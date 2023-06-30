@@ -25,7 +25,7 @@ Content-Type: application/json
   "id": 2,
   "name": "Банан",
   "price": 80,
-  "count": 7
+  "count": 1
 }
 
 ### Удаление продукта по его id

@@ -1,6 +1,7 @@
 package ru.arlekk1ng.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.arlekk1ng.entity.Account;
@@ -36,31 +37,44 @@ public class TransferService {
     public boolean transferMoney(long clientId) {
         Optional<Account> accountOptional = accountRepository.findByClientId(clientId);
 
-        if (accountOptional.isPresent()) {
-            Account account = accountOptional.get();
-            long clientCartId = clientRepository.findById(clientId).get().getCartId();
-            List<CartProduct> cartProductList = cartProductRepository.findAllByCartId(clientCartId);
-            
-            BigDecimal resultSum = BigDecimal.ZERO;
-            Product product;
-            BigDecimal multiply;
-
-            for (CartProduct cartProduct: cartProductList) {
-                product = productRepository.findById(cartProduct.getProductId()).get();
-                int cartProductCount = cartProduct.getProductCount();
-                multiply = product.getPrice().multiply(BigDecimal.valueOf(cartProductCount));
-                product.setCount(product.getCount() - cartProductCount);
-
-                resultSum = resultSum.add(multiply);
-                productRepository.update(product);
-            }
-
-            BigDecimal newBalance = account.getBalance().subtract(resultSum);
-            accountRepository.changeBalance(clientId, newBalance);
-
-            return true;
+        if (accountOptional.isEmpty()) {
+            return false;
         }
 
-        return false;
+        long clientCartId = clientRepository.findById(clientId).get().getCartId();
+        List<CartProduct> clientCartProductList = cartProductRepository.findAllByCartId(clientCartId);
+
+        Product product;
+        Account account = accountOptional.get();
+
+        for (CartProduct cartProduct: clientCartProductList) {
+            product = productRepository.findById(cartProduct.getProductId()).get();
+            int cartProductCount = cartProduct.getProductCount();
+
+            if (!checkIfGoodsInStock(product, cartProductCount)) {
+                throw new RuntimeException("товара " + product + " не хватает на складе");
+            }
+            product.setCount(product.getCount() - cartProductCount);
+
+            account.setBalance(
+                    account.getBalance().subtract(
+                            product.getPrice().multiply(BigDecimal.valueOf(cartProductCount))
+                    )
+            );
+            if (account.getBalance().signum() == -1) {
+                throw new RuntimeException("не достаточно баланса на аккаунте");
+            }
+
+            productRepository.update(product);
+            cartProductRepository.deleteById(cartProduct.getId());
+        }
+
+        accountRepository.changeBalance(clientId, account.getBalance());
+
+        return true;
+    }
+
+    private boolean checkIfGoodsInStock(Product product, int requiredAmount) {
+        return product.getCount() >= requiredAmount;
     }
 }

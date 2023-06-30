@@ -8,6 +8,7 @@ import ru.arlekk1ng.repository.CartRepository;
 import ru.arlekk1ng.repository.ClientRepository;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,6 +41,11 @@ public class ClientController {
             return ResponseEntity.ok().body(optionalClient.get());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping
+    public List<Client> getClients() {
+        return clientRepository.findAll();
     }
 
     @DeleteMapping("/{clientId}")
