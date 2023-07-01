@@ -22,10 +22,10 @@ PUT localhost:8080/product
 Content-Type: application/json
 
 {
-  "id": 2,
-  "name": "Банан",
-  "price": 80,
-  "count": 1
+  "id": 3,
+  "name": "Морковь",
+  "price": 40,
+  "count": 10
 }
 
 ### Удаление продукта по его id

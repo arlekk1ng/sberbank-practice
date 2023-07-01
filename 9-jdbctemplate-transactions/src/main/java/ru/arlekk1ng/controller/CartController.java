@@ -1,11 +1,14 @@
 package ru.arlekk1ng.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.arlekk1ng.entity.Cart;
 import ru.arlekk1ng.entity.CartProduct;
 import ru.arlekk1ng.repository.CartProductRepository;
 import ru.arlekk1ng.repository.CartRepository;
+import ru.arlekk1ng.response.CartResponse;
+import ru.arlekk1ng.service.CartResponseService;
 
 import java.net.URI;
 import java.util.List;
@@ -17,10 +20,17 @@ public class CartController {
     private static final String URL = "http://localhost:8080";
     private CartRepository cartRepository;
     private CartProductRepository cartProductRepository;
+    private CartResponseService cartResponseService;
 
-    public CartController(CartRepository cartRepository, CartProductRepository cartProductRepository) {
+    @Autowired
+    public CartController(
+            CartRepository cartRepository,
+            CartProductRepository cartProductRepository,
+            CartResponseService cartResponseService)
+    {
         this.cartRepository = cartRepository;
         this.cartProductRepository = cartProductRepository;
+        this.cartResponseService = cartResponseService;
     }
 
     @PatchMapping("/add")
@@ -89,7 +99,9 @@ public class CartController {
     public ResponseEntity<?> getCart(@PathVariable long cartId) {
         Optional<Cart> optionalCart = cartRepository.findById(cartId);
         if (optionalCart.isPresent()) {
-            return ResponseEntity.ok().body(optionalCart.get());
+            CartResponse cartResponse
+                    = cartResponseService.getCartResponseFromCart(optionalCart.get());
+            return ResponseEntity.ok().body(cartResponse);
         }
         return ResponseEntity.notFound().build();
     }

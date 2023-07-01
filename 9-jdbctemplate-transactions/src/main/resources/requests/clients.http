@@ -3,16 +3,16 @@ POST localhost:8080/client
 Content-Type: application/json
 
 {
-  "name": "Илья",
-  "email": "i1@yandex.ru",
-  "login": "i1",
+  "name": "Кирилл",
+  "email": "k1@gmail.com",
+  "login": "k195",
   "password": "1xBet"
 }
 
-### Получение клиента по его id
-GET localhost:8080/client/1
+### Получение клиента по его id (в подробном виде)
+GET localhost:8080/client/2
 
-### Получение списка клиентов
+### Получение списка клиентов (как строки в БД)
 GET localhost:8080/client
 
 ### Удаление клиента по его id

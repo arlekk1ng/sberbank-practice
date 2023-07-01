@@ -1,5 +1,5 @@
 ### Оплата товаров клиента по его id
-POST localhost:8080/client/1/transfer
+POST localhost:8080/client/2/transfer
 
 
 ### Создание аккаунта
@@ -7,8 +7,8 @@ POST localhost:8080/account
 Content-Type: application/json
 
 {
-  "clientId": 1,
-  "balance": 100
+  "clientId": 2,
+  "balance": 200
 }
 
 ### Получение списка аккаунтов

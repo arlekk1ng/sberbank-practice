@@ -1,11 +1,14 @@
 package ru.arlekk1ng.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.arlekk1ng.entity.Cart;
 import ru.arlekk1ng.entity.Client;
 import ru.arlekk1ng.repository.CartRepository;
 import ru.arlekk1ng.repository.ClientRepository;
+import ru.arlekk1ng.response.ClientResponse;
+import ru.arlekk1ng.service.ClientResponseService;
 
 import java.net.URI;
 import java.util.List;
@@ -17,10 +20,17 @@ public class ClientController {
     private static final String URL = "http://localhost:8080";
     private ClientRepository clientRepository;
     private CartRepository cartRepository;
+    private ClientResponseService clientResponseService;
 
-    public ClientController(ClientRepository clientRepository, CartRepository cartRepository) {
+    @Autowired
+    public ClientController(
+            ClientRepository clientRepository,
+            CartRepository cartRepository,
+            ClientResponseService clientResponseService
+    ) {
         this.clientRepository = clientRepository;
         this.cartRepository = cartRepository;
+        this.clientResponseService = clientResponseService;
     }
 
     @PostMapping
@@ -38,7 +48,9 @@ public class ClientController {
     public ResponseEntity<?> getClient(@PathVariable long clientId) {
         Optional<Client> optionalClient = clientRepository.findById(clientId);
         if (optionalClient.isPresent()) {
-            return ResponseEntity.ok().body(optionalClient.get());
+            ClientResponse clientResponse
+                    = clientResponseService.getClientResponseFromClient(optionalClient.get());
+            return ResponseEntity.ok().body(clientResponse);
         }
         return ResponseEntity.notFound().build();
     }
