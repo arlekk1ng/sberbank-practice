@@ -3,19 +3,19 @@ POST localhost:8080/product
 Content-Type: application/json
 
 {
-  "name": "Морковь",
-  "price": 70,
-  "count": 10
+  "name": "Душа",
+  "price": 200,
+  "count": 5
 }
 
 ### Получение продукта по его id
-GET localhost:8080/product/2
+GET localhost:8080/product/3
 
 ### Получение всех продуктов
 GET localhost:8080/product
 
 ### Получение продуктов по подстроке наименования
-GET localhost:8080/product?name=Мор
+GET localhost:8080/product?name=Душ
 
 ### Изменение продукта
 PUT localhost:8080/product
@@ -24,9 +24,9 @@ Content-Type: application/json
 {
   "id": 3,
   "name": "Морковь",
-  "price": 40,
+  "price": 35,
   "count": 10
 }
 
 ### Удаление продукта по его id
-DELETE localhost:8080/product/1
+DELETE localhost:8080/product/4

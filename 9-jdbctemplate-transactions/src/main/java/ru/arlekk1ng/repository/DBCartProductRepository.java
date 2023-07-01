@@ -3,14 +3,14 @@ package ru.arlekk1ng.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import ru.arlekk1ng.entity.Cart;
 import ru.arlekk1ng.entity.CartProduct;
+import ru.arlekk1ng.repository.mapper.CartProductRowMapper;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,9 +53,7 @@ public class DBCartProductRepository implements CartProductRepository, JDBCRepos
             return preparedStatement;
         };
 
-        RowMapper<CartProduct> rowMapperCartProduct = getCartProductRowMapper();
-
-        List<CartProduct> cartProductList = jdbcTemplate.query(preparedStatementCreator, rowMapperCartProduct);
+        List<CartProduct> cartProductList = jdbcTemplate.query(preparedStatementCreator, new CartProductRowMapper());
 
         return cartProductList.stream().findFirst();
     }
@@ -70,9 +68,7 @@ public class DBCartProductRepository implements CartProductRepository, JDBCRepos
             return preparedStatement;
         };
 
-        RowMapper<CartProduct> rowMapperCartProduct = getCartProductRowMapper();
-
-        return jdbcTemplate.query(preparedStatementCreator, rowMapperCartProduct);
+        return jdbcTemplate.query(preparedStatementCreator, new CartProductRowMapper());
     }
 
     @Override
@@ -104,15 +100,5 @@ public class DBCartProductRepository implements CartProductRepository, JDBCRepos
         int rows = jdbcTemplate.update(preparedStatementCreator);
 
         return rows > 0;
-    }
-
-    private static RowMapper<CartProduct> getCartProductRowMapper() {
-        return (resultSet, rows) -> {
-            int id = resultSet.getInt("id");
-            int cartId = resultSet.getInt("cart_id");
-            int productId = resultSet.getInt("product_id");
-            int count = resultSet.getInt("count");
-            return new CartProduct(id, cartId, productId, count);
-        };
     }
 }

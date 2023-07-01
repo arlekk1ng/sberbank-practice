@@ -28,9 +28,9 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProduct(@PathVariable long productId) {
-        Optional<Product> optionalProduct = productRepository.findById(productId);
-        if (optionalProduct.isPresent()) {
-            return ResponseEntity.ok().body(optionalProduct.get());
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            return ResponseEntity.ok().body(productOptional.get());
         }
         return ResponseEntity.notFound().build();
     }

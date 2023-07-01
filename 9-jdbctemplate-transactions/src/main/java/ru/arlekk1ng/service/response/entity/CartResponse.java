@@ -1,7 +1,6 @@
-package ru.arlekk1ng.response;
+package ru.arlekk1ng.service.response.entity;
 
 import lombok.Data;
-import ru.arlekk1ng.entity.CartProduct;
 
 import java.util.List;
 

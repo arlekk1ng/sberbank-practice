@@ -7,8 +7,8 @@ import ru.arlekk1ng.entity.Cart;
 import ru.arlekk1ng.entity.CartProduct;
 import ru.arlekk1ng.repository.CartProductRepository;
 import ru.arlekk1ng.repository.CartRepository;
-import ru.arlekk1ng.response.CartResponse;
-import ru.arlekk1ng.service.CartResponseService;
+import ru.arlekk1ng.service.response.entity.CartResponse;
+import ru.arlekk1ng.service.response.CartResponseService;
 
 import java.net.URI;
 import java.util.List;
@@ -35,11 +35,11 @@ public class CartController {
 
     @PatchMapping("/add")
     public ResponseEntity<?> addProduct(@RequestBody CartProduct requestCartProduct) {
-        Optional<CartProduct> optionalCartProduct
+        Optional<CartProduct> cartProductOptional
                 = cartProductRepository.find(requestCartProduct.getCartId(), requestCartProduct.getProductId());
 
-        if (optionalCartProduct.isPresent()) {
-            CartProduct cartProduct = optionalCartProduct.get();
+        if (cartProductOptional.isPresent()) {
+            CartProduct cartProduct = cartProductOptional.get();
             cartProduct.setProductCount(cartProduct.getProductCount() + 1);
             boolean isUpdated = cartProductRepository.update(cartProduct);
             if (isUpdated) {
@@ -56,11 +56,11 @@ public class CartController {
 
     @PatchMapping("/change")
     public ResponseEntity<?> changeProductCount(@RequestBody CartProduct requestCartProduct) {
-        Optional<CartProduct> optionalCartProduct
+        Optional<CartProduct> cartProductOptional
                 = cartProductRepository.find(requestCartProduct.getCartId(), requestCartProduct.getProductId());
 
-        if (optionalCartProduct.isPresent()) {
-            CartProduct cartProduct = optionalCartProduct.get();
+        if (cartProductOptional.isPresent()) {
+            CartProduct cartProduct = cartProductOptional.get();
             cartProduct.setProductCount(requestCartProduct.getProductCount());
             boolean isUpdated = cartProductRepository.update(cartProduct);
             if (isUpdated) {
@@ -73,11 +73,11 @@ public class CartController {
 
     @DeleteMapping
     public ResponseEntity<?> deleteProduct(@RequestBody CartProduct requestCartProduct) {
-        Optional<CartProduct> optionalCartProduct
+        Optional<CartProduct> cartProductOptional
                 = cartProductRepository.find(requestCartProduct.getCartId(), requestCartProduct.getProductId());
 
-        if (optionalCartProduct.isPresent()) {
-            CartProduct cartProduct = optionalCartProduct.get();
+        if (cartProductOptional.isPresent()) {
+            CartProduct cartProduct = cartProductOptional.get();
             boolean isDeleted = cartProductRepository.deleteById(cartProduct.getId());
             if (isDeleted) {
                 return ResponseEntity.noContent().build();
@@ -97,10 +97,10 @@ public class CartController {
 
     @GetMapping("/{cartId}")
     public ResponseEntity<?> getCart(@PathVariable long cartId) {
-        Optional<Cart> optionalCart = cartRepository.findById(cartId);
-        if (optionalCart.isPresent()) {
+        Optional<Cart> cartOptional = cartRepository.findById(cartId);
+        if (cartOptional.isPresent()) {
             CartResponse cartResponse
-                    = cartResponseService.getCartResponseFromCart(optionalCart.get());
+                    = cartResponseService.getCartResponseFromCart(cartOptional.get());
             return ResponseEntity.ok().body(cartResponse);
         }
         return ResponseEntity.notFound().build();

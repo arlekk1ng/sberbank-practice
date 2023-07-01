@@ -1,8 +1,8 @@
-package ru.arlekk1ng.service;
+package ru.arlekk1ng.service.response;
 
 import org.springframework.stereotype.Service;
 import ru.arlekk1ng.entity.Product;
-import ru.arlekk1ng.response.ProductResponse;
+import ru.arlekk1ng.service.response.entity.ProductResponse;
 
 @Service
 public class ProductResponseService {

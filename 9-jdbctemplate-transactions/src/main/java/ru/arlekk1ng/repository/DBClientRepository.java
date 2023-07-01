@@ -3,13 +3,14 @@ package ru.arlekk1ng.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.arlekk1ng.entity.Client;
+import ru.arlekk1ng.repository.mapper.ClientRowMapper;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,9 +55,7 @@ public class DBClientRepository implements ClientRepository, JDBCRepository {
             return preparedStatement;
         };
 
-        RowMapper<Client> rowMapperClient = getRowMapperClient();
-
-        List<Client> clientList = jdbcTemplate.query(preparedStatementCreator, rowMapperClient);
+        List<Client> clientList = jdbcTemplate.query(preparedStatementCreator, new ClientRowMapper());
 
         return clientList.stream().findFirst();
     }
@@ -65,9 +64,7 @@ public class DBClientRepository implements ClientRepository, JDBCRepository {
     public List<Client> findAll() {
         String selectSql = "SELECT * FROM CLIENTS";
 
-        RowMapper<Client> rowMapperClient = getRowMapperClient();
-
-        return jdbcTemplate.query(selectSql, rowMapperClient);
+        return jdbcTemplate.query(selectSql, new ClientRowMapper());
     }
 
     @Override
@@ -83,18 +80,5 @@ public class DBClientRepository implements ClientRepository, JDBCRepository {
         int rows = jdbcTemplate.update(preparedStatementCreator);
 
         return rows > 0;
-    }
-
-    private static RowMapper<Client> getRowMapperClient() {
-        return (resultSet, rows) -> {
-            int id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
-            String email = resultSet.getString("email");
-            String login = resultSet.getString("login");
-            String password = resultSet.getString("password");
-            int cartId = resultSet.getInt("cart_id");
-
-            return new Client(id, name, email, login, password, cartId);
-        };
     }
 }

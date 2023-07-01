@@ -10,10 +10,10 @@ Content-Type: application/json
 }
 
 ### Получение клиента по его id (в подробном виде)
-GET localhost:8080/client/2
+GET localhost:8080/client/4
 
 ### Получение списка клиентов (как строки в БД)
 GET localhost:8080/client
 
 ### Удаление клиента по его id
-DELETE localhost:8080/client/1
+DELETE localhost:8080/client/3

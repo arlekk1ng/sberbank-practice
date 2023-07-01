@@ -3,15 +3,14 @@ package ru.arlekk1ng.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.arlekk1ng.entity.Product;
+import ru.arlekk1ng.repository.mapper.ProductRowMapper;
 
-import java.math.BigDecimal;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,9 +52,7 @@ public class DBProductRepository implements ProductRepository, JDBCRepository {
             return preparedStatement;
         };
 
-        RowMapper<Product> rowMapperProduct = getRowMapperProduct();
-
-        List<Product> productList = jdbcTemplate.query(preparedStatementCreator, rowMapperProduct);
+        List<Product> productList = jdbcTemplate.query(preparedStatementCreator, new ProductRowMapper());
 
         return productList.stream().findFirst();
     }
@@ -70,9 +67,7 @@ public class DBProductRepository implements ProductRepository, JDBCRepository {
             return preparedStatement;
         };
         
-        RowMapper<Product> rowMapperProduct = getRowMapperProduct();
-
-        return jdbcTemplate.query(preparedStatementCreator, rowMapperProduct);
+        return jdbcTemplate.query(preparedStatementCreator, new ProductRowMapper());
     }
 
     @Override
@@ -106,16 +101,5 @@ public class DBProductRepository implements ProductRepository, JDBCRepository {
         int rows = jdbcTemplate.update(preparedStatementCreator);
 
         return rows > 0;
-    }
-
-    private static RowMapper<Product> getRowMapperProduct() {
-        return (resultSet, rows) -> {
-            int id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
-            double price = resultSet.getDouble("price");
-            int count = resultSet.getInt("count");
-
-            return new Product(id, name, BigDecimal.valueOf(price), count);
-        };
     }
 }

@@ -3,14 +3,14 @@ package ru.arlekk1ng.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.arlekk1ng.entity.Cart;
+import ru.arlekk1ng.repository.mapper.CartRowMapper;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,9 +50,7 @@ public class DBCartRepository implements CartRepository, JDBCRepository {
             return preparedStatement;
         };
 
-        RowMapper<Cart> rowMapperCart = getRowMapperCart();
-
-        List<Cart> cartList = jdbcTemplate.query(preparedStatementCreator, rowMapperCart);
+        List<Cart> cartList = jdbcTemplate.query(preparedStatementCreator, new CartRowMapper());
 
         return cartList.stream().findFirst();
     }
@@ -61,13 +59,7 @@ public class DBCartRepository implements CartRepository, JDBCRepository {
     public List<Cart> findAll() {
         String selectSql = "SELECT * FROM CARTS";
 
-        PreparedStatementCreator preparedStatementCreator = connection -> {
-            return connection.prepareStatement(selectSql);
-        };
-
-        RowMapper<Cart> rowMapperCart = getRowMapperCart();
-
-        return jdbcTemplate.query(preparedStatementCreator, rowMapperCart);
+        return jdbcTemplate.query(selectSql, new CartRowMapper());
     }
 
     @Override
@@ -101,13 +93,5 @@ public class DBCartRepository implements CartRepository, JDBCRepository {
         int rows = jdbcTemplate.update(preparedStatementCreator);
 
         return rows > 0;
-    }
-
-    private static RowMapper<Cart> getRowMapperCart() {
-        return (resultSet, rows) -> {
-            int id = resultSet.getInt("id");
-            String promoCode = resultSet.getString("promo_code");
-            return new Cart(id, promoCode);
-        };
     }
 }

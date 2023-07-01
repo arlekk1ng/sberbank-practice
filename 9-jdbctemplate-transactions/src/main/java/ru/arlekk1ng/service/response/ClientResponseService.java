@@ -1,11 +1,11 @@
-package ru.arlekk1ng.service;
+package ru.arlekk1ng.service.response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.arlekk1ng.entity.Client;
 import ru.arlekk1ng.repository.CartRepository;
-import ru.arlekk1ng.response.CartResponse;
-import ru.arlekk1ng.response.ClientResponse;
+import ru.arlekk1ng.service.response.entity.CartResponse;
+import ru.arlekk1ng.service.response.entity.ClientResponse;
 
 @Service
 public class ClientResponseService {

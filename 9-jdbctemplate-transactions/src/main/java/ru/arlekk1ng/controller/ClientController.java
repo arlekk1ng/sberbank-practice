@@ -7,8 +7,8 @@ import ru.arlekk1ng.entity.Cart;
 import ru.arlekk1ng.entity.Client;
 import ru.arlekk1ng.repository.CartRepository;
 import ru.arlekk1ng.repository.ClientRepository;
-import ru.arlekk1ng.response.ClientResponse;
-import ru.arlekk1ng.service.ClientResponseService;
+import ru.arlekk1ng.service.response.entity.ClientResponse;
+import ru.arlekk1ng.service.response.ClientResponseService;
 
 import java.net.URI;
 import java.util.List;
@@ -46,10 +46,10 @@ public class ClientController {
 
     @GetMapping("/{clientId}")
     public ResponseEntity<?> getClient(@PathVariable long clientId) {
-        Optional<Client> optionalClient = clientRepository.findById(clientId);
-        if (optionalClient.isPresent()) {
+        Optional<Client> clientOptional = clientRepository.findById(clientId);
+        if (clientOptional.isPresent()) {
             ClientResponse clientResponse
-                    = clientResponseService.getClientResponseFromClient(optionalClient.get());
+                    = clientResponseService.getClientResponseFromClient(clientOptional.get());
             return ResponseEntity.ok().body(clientResponse);
         }
         return ResponseEntity.notFound().build();

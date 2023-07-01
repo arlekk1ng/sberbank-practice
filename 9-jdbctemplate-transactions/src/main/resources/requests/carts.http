@@ -3,8 +3,8 @@ PATCH localhost:8080/cart/add
 Content-Type: application/json
 
 {
-  "cartId": 4,
-  "productId": 3
+  "cartId": 7,
+  "productId": 5
 }
 
 ### Изменение количества продукта в корзине
@@ -12,8 +12,8 @@ PATCH localhost:8080/cart/change
 Content-Type: application/json
 
 {
-  "cartId": 4,
-  "productId": 2,
+  "cartId": 7,
+  "productId": 5,
   "productCount": 1
 }
 
@@ -22,8 +22,8 @@ DELETE localhost:8080/cart
 Content-Type: application/json
 
 {
-  "cartId": 3,
-  "productId": 2
+  "cartId": 5,
+  "productId": 5
 }
 
 
@@ -36,7 +36,7 @@ Content-Type: application/json
 }
 
 ### Получение корзины по ее id (в подробном виде)
-GET localhost:8080/cart/4
+GET localhost:8080/cart/7
 
 ### Получение всех корзин (как строки в БД)
 GET localhost:8080/cart
@@ -46,7 +46,7 @@ PUT localhost:8080/cart
 Content-Type: application/json
 
 {
-  "id": 4,
+  "id": 7,
   "promoCode": "1xСтавка"
 }
 

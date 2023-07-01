@@ -1,4 +1,4 @@
-package ru.arlekk1ng.response;
+package ru.arlekk1ng.service.response.entity;
 
 import lombok.Data;
 
