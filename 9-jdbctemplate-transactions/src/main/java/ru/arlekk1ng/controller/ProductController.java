@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("products")
 public class ProductController {
     private static final String URL = "http://localhost:8080";
     private ProductRepository productRepository;
@@ -22,7 +22,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> addProduct(@RequestBody Product product) {
         long productId = productRepository.save(product);
-        URI uri = URI.create(URL + "/product/" + productId);
+        URI uri = URI.create(URL + "/products/" + productId);
         return ResponseEntity.created(uri).build();
     }
 
@@ -40,8 +40,10 @@ public class ProductController {
         return productRepository.findAll(name);
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateProduct(@RequestBody Product product) {
+    @PutMapping("/{productId}")
+    public ResponseEntity<?> updateProduct(
+            @PathVariable long productId, @RequestBody Product product) {
+        product.setId(productId);
         boolean isUpdated = productRepository.update(product);
         if (isUpdated) {
             return ResponseEntity.accepted().body(product);

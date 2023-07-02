@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("cart")
+@RequestMapping("carts")
 public class CartController {
     private static final String URL = "http://localhost:8080";
     private CartRepository cartRepository;
@@ -26,62 +26,59 @@ public class CartController {
     public CartController(
             CartRepository cartRepository,
             CartProductRepository cartProductRepository,
-            CartResponseService cartResponseService)
-    {
+            CartResponseService cartResponseService
+    ) {
         this.cartRepository = cartRepository;
         this.cartProductRepository = cartProductRepository;
         this.cartResponseService = cartResponseService;
     }
 
-    @PatchMapping("/add")
-    public ResponseEntity<?> addProduct(@RequestBody CartProduct requestCartProduct) {
+    @PostMapping("/{cartId}/products/{productId}")
+    public ResponseEntity<?> addProduct(@PathVariable long cartId, @PathVariable long productId) {
         Optional<CartProduct> cartProductOptional
-                = cartProductRepository.find(requestCartProduct.getCartId(), requestCartProduct.getProductId());
+                = cartProductRepository.find(cartId, productId);
 
+        CartProduct cartProduct;
         if (cartProductOptional.isPresent()) {
-            CartProduct cartProduct = cartProductOptional.get();
+            cartProduct = cartProductOptional.get();
             cartProduct.setProductCount(cartProduct.getProductCount() + 1);
-            boolean isUpdated = cartProductRepository.update(cartProduct);
-            if (isUpdated) {
-                return ResponseEntity.accepted().body(cartProduct);
-            }
-            return ResponseEntity.notFound().build();
+            cartProductRepository.update(cartProduct);
+        } else {
+            // проверка на существование корзины и продутка
+
+            cartProduct = new CartProduct(cartId, productId, 1);
+            long cartProductId = cartProductRepository.save(cartProduct);
+            cartProduct.setId(cartProductId);
         }
 
-        requestCartProduct.setProductCount(1);
-        long cartProductId = cartProductRepository.save(requestCartProduct);
-        URI uri = URI.create(URL + "/cartproduct/" + cartProductId);
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.accepted().body(cartProduct);
     }
 
-    @PatchMapping("/change")
-    public ResponseEntity<?> changeProductCount(@RequestBody CartProduct requestCartProduct) {
+    @PatchMapping("/{cartId}/products/{productId}")
+    public ResponseEntity<?> changeProductCount(
+            @PathVariable long cartId, @PathVariable long productId, @RequestBody CartProduct requestCartProduct) {
         Optional<CartProduct> cartProductOptional
-                = cartProductRepository.find(requestCartProduct.getCartId(), requestCartProduct.getProductId());
+                = cartProductRepository.find(cartId, productId);
 
         if (cartProductOptional.isPresent()) {
             CartProduct cartProduct = cartProductOptional.get();
             cartProduct.setProductCount(requestCartProduct.getProductCount());
-            boolean isUpdated = cartProductRepository.update(cartProduct);
-            if (isUpdated) {
-                return ResponseEntity.accepted().body(cartProduct);
-            }
+            cartProductRepository.update(cartProduct);
+            return ResponseEntity.accepted().body(cartProduct);
         }
 
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteProduct(@RequestBody CartProduct requestCartProduct) {
+    @DeleteMapping("/{cartId}/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable long cartId, @PathVariable long productId) {
         Optional<CartProduct> cartProductOptional
-                = cartProductRepository.find(requestCartProduct.getCartId(), requestCartProduct.getProductId());
+                = cartProductRepository.find(cartId, productId);
 
         if (cartProductOptional.isPresent()) {
             CartProduct cartProduct = cartProductOptional.get();
-            boolean isDeleted = cartProductRepository.deleteById(cartProduct.getId());
-            if (isDeleted) {
-                return ResponseEntity.noContent().build();
-            }
+            cartProductRepository.deleteById(cartProduct.getId());
+            return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.notFound().build();
@@ -107,12 +104,13 @@ public class CartController {
     }
 
     @GetMapping
-    public List<Cart> geCarts() {
+    public List<Cart> getCarts() {
         return cartRepository.findAll();
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateCart(@RequestBody Cart cart) {
+    @PutMapping("/{cartId}")
+    public ResponseEntity<?> updateCart(@PathVariable long cartId, @RequestBody Cart cart) {
+        cart.setId(cartId);
         boolean isUpdated = cartRepository.update(cart);
         if (isUpdated) {
             return ResponseEntity.accepted().body(cart);

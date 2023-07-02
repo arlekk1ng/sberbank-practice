@@ -1,34 +1,20 @@
 ### Добавление продукта в корзину
-PATCH localhost:8080/cart/add
-Content-Type: application/json
-
-{
-  "cartId": 7,
-  "productId": 5
-}
+POST localhost:8080/carts/7/products/5
 
 ### Изменение количества продукта в корзине
-PATCH localhost:8080/cart/change
+PATCH localhost:8080/carts/7/products/5
 Content-Type: application/json
 
 {
-  "cartId": 7,
-  "productId": 5,
   "productCount": 1
 }
 
 ### Удаление продукта из корзины
-DELETE localhost:8080/cart
-Content-Type: application/json
-
-{
-  "cartId": 5,
-  "productId": 5
-}
+DELETE localhost:8080/carts/7/products/5
 
 
 ### Создание корзины
-POST localhost:8080/cart
+POST localhost:8080/carts
 Content-Type: application/json
 
 {
@@ -36,19 +22,18 @@ Content-Type: application/json
 }
 
 ### Получение корзины по ее id (в подробном виде)
-GET localhost:8080/cart/7
+GET localhost:8080/carts/7
 
 ### Получение всех корзин (как строки в БД)
-GET localhost:8080/cart
+GET localhost:8080/carts
 
-### Изменение корзины
-PUT localhost:8080/cart
+### Изменение корзины по ее id
+PUT localhost:8080/carts/7
 Content-Type: application/json
 
 {
-  "id": 7,
   "promoCode": "1xСтавка"
 }
 
 ### Удаление корзины по ее id
-DELETE localhost:8080/cart/1
+DELETE localhost:8080/carts/1

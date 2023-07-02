@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("client")
+@RequestMapping("clients")
 public class ClientController {
     private static final String URL = "http://localhost:8080";
     private ClientRepository clientRepository;
@@ -40,7 +40,7 @@ public class ClientController {
 
         long clientId = clientRepository.save(client);
 
-        URI uri = URI.create(URL + "/client/" + clientId);
+        URI uri = URI.create(URL + "/clients/" + clientId);
         return ResponseEntity.created(uri).build();
     }
 

@@ -1,5 +1,5 @@
 ### Создание продукта
-POST localhost:8080/product
+POST localhost:8080/products
 Content-Type: application/json
 
 {
@@ -9,24 +9,23 @@ Content-Type: application/json
 }
 
 ### Получение продукта по его id
-GET localhost:8080/product/3
+GET localhost:8080/products/5
 
 ### Получение всех продуктов
-GET localhost:8080/product
+GET localhost:8080/products
 
 ### Получение продуктов по подстроке наименования
-GET localhost:8080/product?name=Душ
+GET localhost:8080/products?name=Душ
 
-### Изменение продукта
-PUT localhost:8080/product
+### Изменение продукта по его id
+PUT localhost:8080/products/5
 Content-Type: application/json
 
 {
-  "id": 3,
   "name": "Морковь",
   "price": 35,
   "count": 10
 }
 
 ### Удаление продукта по его id
-DELETE localhost:8080/product/4
+DELETE localhost:8080/products/6

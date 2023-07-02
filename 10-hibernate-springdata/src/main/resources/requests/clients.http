@@ -1,0 +1,58 @@
+###
+# Регистрация нового клиента
+POST localhost:8080/clients
+Content-Type: application/json
+
+{
+  "name": "Илья",
+  "email": "i1@ya.ru",
+  "login": "i1ya",
+  "password": "57r0n9"
+}
+
+###
+# Получение списка всех клиентов
+GET localhost:8080/clients
+
+###
+# Получение клиента по его id
+GET localhost:8080/clients/1
+
+###
+# Изменение клиента по его id
+PUT localhost:8080/clients/1
+Content-Type: application/json
+
+{
+  "name": "Кирилл",
+  "email": "k1@gmail.com",
+  "login": "k1r111",
+  "password": "n0757r0n9"
+}
+
+
+###
+# Добавление одной единицы продукта клиенту по id продукта
+POST localhost:8080/clients/1/cart/products
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###
+# Получение списка всех продуктов у клиента
+GET localhost:8080/clients/1/cart/products
+
+###
+#
+PUT localhost:8080/clients/1/cart/products/1
+Content-Type: application/json
+
+{
+  "productCount": 2
+}
+
+###
+#
+DELETE localhost:8080/clients/1/cart/products/1

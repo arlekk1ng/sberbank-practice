@@ -1,0 +1,29 @@
+###
+# Добавление нового продукта
+POST localhost:8080/products
+Content-Type: application/json
+
+{
+  "name": "Душа-Обыкновенная",
+  "price": 200,
+  "count": 5
+}
+
+###
+# Получение списка всех продуктов
+GET localhost:8080/products
+
+###
+# Получение продукта по его id
+GET localhost:8080/products/1
+
+###
+# Изменение продукта по его id
+PUT localhost:8080/products/3
+Content-Type: application/json
+
+{
+  "name": "Душа-Опустошенная",
+  "price": 150,
+  "count": 10
+}
