@@ -50,7 +50,7 @@ PUT localhost:8080/clients/1/cart/products/1
 Content-Type: application/json
 
 {
-  "productCount": 6
+  "productCount": 2
 }
 
 ###

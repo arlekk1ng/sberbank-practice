@@ -16,15 +16,15 @@ public class Client {
     private String name;
 
     @Column(nullable = false)
-    @JsonIgnore
+    // @JsonIgnore
     private String email;
 
     @Column(nullable = false)
-    @JsonIgnore
+    // @JsonIgnore
     private String login;
 
     @Column(nullable = false)
-    @JsonIgnore
+    // @JsonIgnore
     private String password;
 
     @OneToOne

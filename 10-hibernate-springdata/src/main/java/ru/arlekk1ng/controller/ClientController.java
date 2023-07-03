@@ -51,10 +51,19 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public Client update(@PathVariable long id, @RequestBody Client client) {
+    public ResponseEntity<?> update(@PathVariable long id, @RequestBody Client client) {
+        Optional<Client> clientOptional = clientService.findById(id);
+        if (clientOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Cart clientCart = clientOptional.get().getCart();
         client.setId(id);
+        client.setCart(clientCart);
+
         clientService.update(client);
-        return client;
+
+        return ResponseEntity.ok().body(client);
     }
 
     @PutMapping("/{clientId}/cart/payment")

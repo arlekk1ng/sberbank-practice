@@ -24,4 +24,14 @@ public class Product {
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     private List<CartProduct> cartProductList;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", count=" + count +
+                '}';
+    }
 }

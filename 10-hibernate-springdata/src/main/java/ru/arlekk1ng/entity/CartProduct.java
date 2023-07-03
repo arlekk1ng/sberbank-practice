@@ -13,19 +13,25 @@ public class CartProduct {
     @JsonIgnore
     private long id;
 
-//    @Column(nullable = false)
-//    private long cartId;
     @ManyToOne
     @JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "FK_CARTS_PRODUCTS_CART"))
     @JsonIgnore
     private Cart cart;
 
-//    @Column(nullable = false)
-//    private long productId;
     @ManyToOne
     @JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "FK_CARTS_PRODUCTS_PRODUCT"))
     private Product product;
 
     @Column(nullable = false)
     private int productCount;
+
+    @Override
+    public String toString() {
+        return "CartProduct{" +
+                "id=" + id +
+                ", cartId=" + cart.getId() +
+                ", productName=" + product.getName() +
+                ", productCount=" + productCount +
+                '}';
+    }
 }

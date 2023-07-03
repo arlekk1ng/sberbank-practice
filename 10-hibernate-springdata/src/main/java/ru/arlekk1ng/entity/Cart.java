@@ -22,4 +22,12 @@ public class Cart {
     @OneToOne(mappedBy = "cart")
     @JsonIgnore
     private Client client;
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id=" + id +
+                ", promoCode='" + promoCode + '\'' +
+                '}';
+    }
 }

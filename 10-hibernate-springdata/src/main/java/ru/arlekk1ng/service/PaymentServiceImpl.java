@@ -51,8 +51,7 @@ public class PaymentServiceImpl implements PaymentService {
             neededCount = cartProduct.getProductCount();
 
             if (countInStock < neededCount) {
-                // throw new RuntimeException("товара " + product + " не хватает на складе");
-                throw new RuntimeException("товара " + product.getName() + " не хватает на складе");
+                throw new RuntimeException("товара " + product + " не хватает на складе");
             }
 
             product.setCount(countInStock - neededCount);
@@ -61,7 +60,7 @@ public class PaymentServiceImpl implements PaymentService {
             subtract = bankCard.getBalance().subtract(multiply);
 
             if (subtract.signum() == -1) {
-                throw new RuntimeException("не достаточно баланса на аккаунте");
+                throw new RuntimeException("не достаточно баланса на банковской карте");
             }
 
             bankCard.setBalance(subtract);
