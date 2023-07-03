@@ -3,12 +3,10 @@ package ru.arlekk1ng.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.arlekk1ng.entity.Cart;
-import ru.arlekk1ng.entity.CartProduct;
-import ru.arlekk1ng.entity.Client;
-import ru.arlekk1ng.entity.Product;
+import ru.arlekk1ng.entity.*;
 import ru.arlekk1ng.service.CartService;
 import ru.arlekk1ng.service.ClientService;
+import ru.arlekk1ng.service.PaymentService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -20,11 +18,13 @@ import java.util.Optional;
 public class ClientController {
     private final ClientService clientService;
     private final CartService cartService;
-
+    private final PaymentService paymentService;
+    
     @Autowired
-    public ClientController(ClientService clientService, CartService cartService) {
+    public ClientController(ClientService clientService, CartService cartService, PaymentService paymentService) {
         this.clientService = clientService;
         this.cartService = cartService;
+        this.paymentService = paymentService;
     }
 
     @PostMapping
@@ -57,6 +57,22 @@ public class ClientController {
         return client;
     }
 
+    @PutMapping("/{clientId}/cart/payment")
+    public ResponseEntity<Void> pay(@PathVariable long clientId, @RequestBody BankCard bankCard) {
+        Optional<Client> clientOptional = clientService.findById(clientId);
+        if (clientOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Cart clientCart = clientOptional.get().getCart();
+        boolean isPaid = paymentService.pay(clientCart, bankCard.getCardNumber());
+
+        if (!isPaid) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+    
     @PostMapping("/{clientId}/cart/products")
     public ResponseEntity<?> addProductInCart(
             @PathVariable long clientId, @RequestBody Product product) throws URISyntaxException {

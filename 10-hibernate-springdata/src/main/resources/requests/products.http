@@ -19,7 +19,7 @@ GET localhost:8080/products/1
 
 ###
 # Изменение продукта по его id
-PUT localhost:8080/products/3
+PUT localhost:8080/products/1
 Content-Type: application/json
 
 {

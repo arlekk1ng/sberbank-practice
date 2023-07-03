@@ -45,14 +45,24 @@ Content-Type: application/json
 GET localhost:8080/clients/1/cart/products
 
 ###
-#
+# Изменение количества продукта у клиента
 PUT localhost:8080/clients/1/cart/products/1
 Content-Type: application/json
 
 {
-  "productCount": 2
+  "productCount": 6
 }
 
 ###
-#
+# Удаление продукта из корзины у клиента
 DELETE localhost:8080/clients/1/cart/products/1
+
+
+###
+# Оплата корзины клиента по номеру банк. карты
+PUT localhost:8080/clients/1/cart/payment
+Content-Type: application/json
+
+{
+  "cardNumber": "1111 2222 3333 4444"
+}
