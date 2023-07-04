@@ -1,13 +1,17 @@
 export const Payment = () => {
-    const handlerClick = () => {
-
-    }
+    const pay = () => {}
 
     return (
-        <div>
-            <div>client id: <input type={"number"} min={1} defaultValue={1}/></div>
-            <div>Номер банк. карты: <input type={"text"}/></div>
-            <button onClick={handlerClick}>Оплатить</button>
+        <div className={"product-container"}>
+            <div className={"row"}>
+                <span className={"column-field-name"}>id:</span>
+                <input className={"column-field-value"} type={"number"} min={1} defaultValue={1}/>
+            </div>
+            <div className={"row"}>
+                <span className={"column-field-name"}>Номер банк. карты:</span>
+                <input className={"column-field-value"} type={"text"}/>
+            </div>
+            <button onClick={pay}>Оплатить</button>
         </div>
     )
 }

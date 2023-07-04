@@ -26,7 +26,7 @@ const client =
 }
 
 export const ClientSearch = () => {
-    const getClick = () => {}
+    const getClient = () => {}
     const changeProductCountInCart = () => {}
     const deleteProductInCart = () => {}
     const addProductInCart = () => {}
@@ -36,14 +36,14 @@ export const ClientSearch = () => {
             client.cart.cartProductList.map(cartProduct => {
                 return (
                     <div className={"row"}>
-                        <div className={"column"}>{cartProduct.product.id}</div>
-                        <div className={"column"}>{cartProduct.product.name}</div>
-                        <div className={"column"}>{cartProduct.product.price}</div>
-                        <div className={"column"}>
+                        <div className={"column-cart-product"}>{cartProduct.product.id}</div>
+                        <div className={"column-cart-product"}>{cartProduct.product.name}</div>
+                        <div className={"column-cart-product"}>{cartProduct.product.price}</div>
+                        <div className={"column-cart-product"}>
                             <input type={"number"} min={1} defaultValue={cartProduct.productCount}/>
                             <button onClick={changeProductCountInCart}>Изменить</button>
                         </div>
-                        <div className={"column"}>
+                        <div className={"column-cart-product"}>
                             <button onClick={deleteProductInCart}>Удалить</button>
                         </div>
                     </div>
@@ -54,31 +54,40 @@ export const ClientSearch = () => {
 
     return (
         <div>
-            <div>
-                id: <input type={"number"} min={1} defaultValue={1}/><button onClick={getClick}>Найти</button>
+            <div className={"client-container"}>
+                <div className={"row"}>
+                    <div className={"column-client-field-name"}>id:</div>
+                    <div className={"column-client-field-value"}>
+                        <input type={"number"} min={1} defaultValue={1}/>
+                        <button onClick={getClient}>Найти</button>
+                    </div>
+                </div>
+                <div className={"row"}>
+                    <div className={"column-client-field-name"}>Имя:</div>
+                    <div className={"column-client-field-value"}>{client.name}</div>
+                </div>
             </div>
-            <div>Имя: {client.name}</div>
 
-            <div className={"cart"}>
-                <div className={"cart-title"}>Корзина</div>
-                <div>Промокод: {client.cart.promoCode}</div>
+            <div className={"cart-container"}>
+                <div><b>Корзина</b></div>
+                <div className={"row"}>
+                    <div className={"column-client-field-name"}>Промокод:</div>
+                    <div className={"column-client-field-value"}>{client.cart.promoCode}</div>
+                </div>
+
                 <div>Продукты:</div>
-                <div className={"row row-title"}>
-                    <div className={"column"}>id</div>
-                    <div className={"column"}>Наименование</div>
-                    <div className={"column"}>Цена</div>
-                    <div className={"column"}>Количество</div>
-                    <div className={"column"}></div>
+                <div className={"row row-cart-product-header"}>
+                    <div className={"column-cart-product"}>id</div>
+                    <div className={"column-cart-product"}>Наименование</div>
+                    <div className={"column-cart-product"}>Цена</div>
+                    <div className={"column-cart-product"}>Количество</div>
                 </div>
                 <CartProductList/>
                 <div className={"row"}>
-                    <div className={"column"}>
-                        <input type={"number"} min={1} defaultValue={1}/><button onClick={addProductInCart}>Добавить</button>
+                    <div className={"column-cart-product"}>
+                        <input type={"number"} min={1} defaultValue={1}/>
+                        <button onClick={addProductInCart}>Добавить</button>
                     </div>
-                    <div className={"column"}></div>
-                    <div className={"column"}></div>
-                    <div className={"column"}></div>
-                    <div className={"column"}></div>
                 </div>
             </div>
         </div>
