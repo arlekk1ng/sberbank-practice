@@ -24,7 +24,7 @@ PUT localhost:8080/clients/1
 Content-Type: application/json
 
 {
-  "name": "Кирилл",
+  "name": "неКирилл",
   "email": "k1@gmail.com",
   "login": "k1r111",
   "password": "n0757r0n9"
@@ -37,7 +37,7 @@ POST localhost:8080/clients/1/cart/products
 Content-Type: application/json
 
 {
-  "id": 1
+  "id": 3
 }
 
 ###
@@ -50,7 +50,7 @@ PUT localhost:8080/clients/1/cart/products/1
 Content-Type: application/json
 
 {
-  "productCount": 2
+  "productCount": 3
 }
 
 ###
