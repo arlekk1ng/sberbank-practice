@@ -2,7 +2,7 @@ import {Button, Form, Input, InputNumber, Modal} from 'antd';
 import {useState} from 'react';
 import {EditOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
-import {updateProduct} from "../slices/ProductSlice.js";
+import {updateProduct} from "../slices/ProductsSlice";
 
 const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
   const [form] = Form.useForm();
@@ -59,14 +59,16 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
     </Modal>
   );
 };
-const ProductEditForm = () => {
+const ProductEditForm = ({productId}) => {
   const dispatch = useDispatch()
 
   const [open, setOpen] = useState(false);
   const onCreate = (product) => {
+    product.id = productId;
     dispatch(updateProduct(product));
     setOpen(false);
   };
+
   return (
     <div>
       <Button

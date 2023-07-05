@@ -1,10 +1,10 @@
 import './App.css';
-import ProductCard from "./components/ProductCard";
+import CardsListGridLayout from "./components/CardsGridColumnLayout";
 
 function App() {
   return (
     <div>
-      <ProductCard />
+      <CardsListGridLayout />
     </div>
   );
 }

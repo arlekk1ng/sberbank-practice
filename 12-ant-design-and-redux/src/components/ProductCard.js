@@ -3,9 +3,7 @@ import {Button, Card} from 'antd';
 import ProductEditForm from "./ProductEditForm";
 import {useSelector} from "react-redux";
 
-const ProductCard = () => {
-  const product = useSelector(state => state.product.value)
-
+const ProductCard = ({product}) => {
   return (
     <Card
       style={{
@@ -22,12 +20,12 @@ const ProductCard = () => {
           icon={<PlusOutlined />}
           type="text"
         />,
-        <ProductEditForm />,
+        <ProductEditForm productId={product.id}/>,
       ]}
     >
 
       <div>
-        <p>{product.name}</p>
+        <p><b>{product.name}</b></p>
         <p>{product.price} руб.</p>
       </div>
 
