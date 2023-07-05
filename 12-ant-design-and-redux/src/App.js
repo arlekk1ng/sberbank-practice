@@ -1,10 +1,11 @@
 import './App.css';
-import CardsListGridLayout from "./components/CardsGridColumnLayout";
+import ProductsCartTabs from "./components/ProductsCartTabs";
+import MainLayout from "./components/MainLayout";
 
 function App() {
   return (
     <div>
-      <CardsListGridLayout />
+      <MainLayout />
     </div>
   );
 }

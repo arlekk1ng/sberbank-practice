@@ -2,7 +2,7 @@ import {Button, Form, Input, InputNumber, Modal} from 'antd';
 import {useState} from 'react';
 import {EditOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
-import {updateProduct} from "../slices/ProductsSlice";
+import {updateProduct} from "../../slices/storeProductsSlice";
 
 const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
   const [form] = Form.useForm();
@@ -52,14 +52,16 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
               message: 'Введите цену продукта',
             },
           ]}
+          initialValue={0}
         >
-          <InputNumber min={0} defaultValue={0} />
+          <InputNumber min={0} />
         </Form.Item>
       </Form>
     </Modal>
   );
 };
-const ProductEditForm = ({productId}) => {
+
+const StoreProductEditForm = ({productId}) => {
   const dispatch = useDispatch()
 
   const [open, setOpen] = useState(false);
@@ -88,4 +90,4 @@ const ProductEditForm = ({productId}) => {
     </div>
   );
 };
-export default ProductEditForm;
+export default StoreProductEditForm;

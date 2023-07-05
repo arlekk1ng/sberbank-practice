@@ -1,9 +1,12 @@
 import {PlusOutlined} from '@ant-design/icons';
 import {Button, Card} from 'antd';
-import ProductEditForm from "./ProductEditForm";
-import {useSelector} from "react-redux";
+import StoreProductEditForm from "./StoreProductEditForm";
+import {useDispatch} from "react-redux";
+import {addProduct} from "../../slices/cartProductsSlice";
 
-const ProductCard = ({product}) => {
+const StoreProductCard = ({product}) => {
+  const dispatch = useDispatch()
+
   return (
     <Card
       style={{
@@ -19,8 +22,9 @@ const ProductCard = ({product}) => {
         <Button
           icon={<PlusOutlined />}
           type="text"
+          onClick={() => dispatch(addProduct(product))}
         />,
-        <ProductEditForm productId={product.id}/>,
+        <StoreProductEditForm productId={product.id}/>,
       ]}
     >
 
@@ -32,4 +36,4 @@ const ProductCard = ({product}) => {
     </Card>
   );
 };
-export default ProductCard;
+export default StoreProductCard;
