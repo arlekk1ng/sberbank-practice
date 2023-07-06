@@ -1,0 +1,22 @@
+###
+# Добавление новой банковской карты
+POST localhost:8080/bank-cards
+Content-Type: application/json
+
+{
+  "cardNumber": "1111 2222 3333 4444",
+  "balance": 500
+}
+
+###
+# Получение списка всех банковских карт
+GET localhost:8080/bank-cards
+
+###
+# Изменение баланса банковской карты
+PUT localhost:8080/bank-cards/1
+Content-Type: application/json
+
+{
+  "balance": 1000
+}

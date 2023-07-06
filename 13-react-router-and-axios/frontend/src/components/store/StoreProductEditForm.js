@@ -2,7 +2,8 @@ import {Button, Form, Input, InputNumber, Modal} from 'antd';
 import {useState} from 'react';
 import {EditOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
-import {updateProduct} from "../../slices/storeProductsSlice";
+import productService from "../../services/productService";
+
 
 const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
   const [form] = Form.useForm();
@@ -56,6 +57,20 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
         >
           <InputNumber min={0} />
         </Form.Item>
+
+        <Form.Item
+          name="count"
+          label="Количестсво"
+          rules={[
+            {
+              required: true,
+              message: 'Введите количество продукта',
+            },
+          ]}
+          initialValue={0}
+        >
+          <InputNumber min={0} />
+        </Form.Item>
       </Form>
     </Modal>
   );
@@ -66,8 +81,7 @@ const StoreProductEditForm = ({productId}) => {
 
   const [open, setOpen] = useState(false);
   const onCreate = (product) => {
-    product.id = productId;
-    dispatch(updateProduct(product));
+    productService.updateProduct(productId, product, dispatch);
     // сделать апдейт в cartProductSlice
     // dispatch(updateProduct(product));
     setOpen(false);

@@ -1,16 +1,16 @@
 import {Button, Form, Input, InputNumber, Modal} from 'antd';
 import {useState} from 'react';
-import {EditOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
-import {updateProduct} from "../../slices/storeProductsSlice";
+import productService from "../../services/productService";
+
 
 const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
   const [form] = Form.useForm();
   return (
     <Modal
       open={open}
-      title="Изменение продукта"
-      okText="Сохранить"
+      title="Добавление продукта"
+      okText="Добавить"
       cancelText="Отменить"
       onCancel={onCancel}
       onOk={() => {
@@ -56,32 +56,41 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
         >
           <InputNumber min={0} />
         </Form.Item>
+
+        <Form.Item
+          name="count"
+          label="Количестсво"
+          rules={[
+            {
+              required: true,
+              message: 'Введите количество продукта',
+            },
+          ]}
+          initialValue={0}
+        >
+          <InputNumber min={0} />
+        </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-const StoreProductEditForm = ({productId}) => {
+const StoreProductCreateForm = () => {
   const dispatch = useDispatch()
 
   const [open, setOpen] = useState(false);
   const onCreate = (product) => {
-    product.id = productId;
-    dispatch(updateProduct(product));
-    // сделать апдейт в cartProductSlice
-    // dispatch(updateProduct(product));
+    productService.addProduct(product, dispatch)
     setOpen(false);
   };
 
   return (
     <div>
       <Button
-        icon={<EditOutlined />}
-        type="text"
         onClick={() => {
           setOpen(true);
         }}
-      />
+      >Добавить новый продукт</Button>
       <CollectionCreateForm
         open={open}
         onCreate={onCreate}
@@ -92,4 +101,4 @@ const StoreProductEditForm = ({productId}) => {
     </div>
   );
 };
-export default StoreProductEditForm;
+export default StoreProductCreateForm;

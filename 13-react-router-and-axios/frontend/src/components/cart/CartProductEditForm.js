@@ -1,15 +1,15 @@
 import {Button, Form, Input, InputNumber, Modal} from 'antd';
 import {useState} from 'react';
 import {EditOutlined} from "@ant-design/icons";
-import {useDispatch} from "react-redux";
-import {updateProduct} from "../../slices/storeProductsSlice";
+import {useDispatch, useSelector} from "react-redux";
+import clientService from "../../services/clientService";
 
 const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
   const [form] = Form.useForm();
   return (
     <Modal
       open={open}
-      title="Изменение продукта"
+      title="Изменение количества продукта"
       okText="Сохранить"
       cancelText="Отменить"
       onCancel={onCancel}
@@ -31,45 +31,35 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
         name="form_in_modal"
       >
         <Form.Item
-          name="name"
-          label="Наименование"
+          name="count"
           rules={[
             {
               required: true,
-              message: 'Введите наименование продукта',
+              message: 'Введите количество продукта',
             },
           ]}
+          initialValue={1}
         >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="price"
-          label="Цена"
-          rules={[
-            {
-              required: true,
-              message: 'Введите цену продукта',
-            },
-          ]}
-          initialValue={0}
-        >
-          <InputNumber min={0} />
+          <InputNumber min={1} />
         </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-const StoreProductEditForm = ({productId}) => {
-  const dispatch = useDispatch()
+const CartProductEditForm = ({cartProduct}) => {
+  const client = useSelector(state => state.client.value);
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
-  const onCreate = (product) => {
-    product.id = productId;
-    dispatch(updateProduct(product));
-    // сделать апдейт в cartProductSlice
-    // dispatch(updateProduct(product));
+  const onCreate = (values) => {
+    // cartProduct.productCount = values.count;
+    const newProductCount = {
+      ...cartProduct,
+      productCount: values.count
+    }
+
+    clientService.changeProductCountInCart(client.id, cartProduct.product.id, newProductCount, dispatch);
     setOpen(false);
   };
 
@@ -92,4 +82,4 @@ const StoreProductEditForm = ({productId}) => {
     </div>
   );
 };
-export default StoreProductEditForm;
+export default CartProductEditForm;
