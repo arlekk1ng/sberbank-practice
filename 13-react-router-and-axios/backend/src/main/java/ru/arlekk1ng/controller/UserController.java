@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.arlekk1ng.entity.*;
-import ru.arlekk1ng.entity.response.UserResponse;
 import ru.arlekk1ng.service.CartService;
 import ru.arlekk1ng.service.ProductService;
 import ru.arlekk1ng.service.UserService;
@@ -12,7 +11,6 @@ import ru.arlekk1ng.service.PaymentService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,15 +45,17 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserResponse> getAll() {
-        List<UserResponse> userResponseList = new ArrayList<>();
-        for (User user: userService.findAll()) {
-            UserResponse userResponse
-                    = new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getCart());
-            userResponseList.add(userResponse);
-        }
-        
-        return userResponseList;
+    public List<User> getAll() {
+        return userService.findAll();
+
+//        List<UserResponseOld> userResponseList = new ArrayList<>();
+//        for (User user: userService.findAll()) {
+//            UserResponseOld userResponse
+//                    = new UserResponseOld(user.getId(), user.getName(), user.getEmail(), user.getCart());
+//            userResponseList.add(userResponse);
+//        }
+//
+//        return userResponseList;
     }
 
     @GetMapping("/{id}")
@@ -66,10 +66,12 @@ public class UserController {
         }
         
         User user = userOptional.get();
-        UserResponse userResponse
-                = new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getCart());
+        return ResponseEntity.ok().body(user);
 
-        return ResponseEntity.ok().body(userResponse);
+//        UserResponseOld userResponse
+//                = new UserResponseOld(user.getId(), user.getName(), user.getEmail(), user.getCart());
+//
+//        return ResponseEntity.ok().body(userResponse);
     }
 
     @PutMapping("/{id}")
