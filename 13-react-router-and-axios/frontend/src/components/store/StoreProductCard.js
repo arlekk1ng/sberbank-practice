@@ -25,7 +25,7 @@ const StoreProductCard = ({product}) => {
         <StoreProductEditForm product={product}/>,
         <Button
           icon={<PlusOutlined />}
-          type="text"
+          // type="text"
           onClick={() => userService.addProductInUserCart(user.id, product, dispatch)}
         />,
       ]}

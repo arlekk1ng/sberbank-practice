@@ -6,14 +6,14 @@ import userService from "./services/userService";
 import MainLayout from "./components/MainLayout";
 
 function App() {
-  const user = useSelector(state => state.user.value);
+  // const user = useSelector(state => state.user.value);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    productService.getStoreProducts(dispatch);
-    // userService.getProductsFromUserCart(user.id, dispatch);
-  }, [])
+  // const dispatch = useDispatch();
+  //
+  // useEffect(() => {
+  //   productService.getStoreProducts(dispatch);
+  //   // userService.getProductsFromUserCart(user.id, dispatch);
+  // }, [])
 
   return (
     <div>

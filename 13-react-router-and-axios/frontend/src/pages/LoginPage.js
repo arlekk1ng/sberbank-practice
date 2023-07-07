@@ -14,7 +14,9 @@ const LoginPage = () => {
             console.log(user);
             dispatch(login(user));
             navigate("/");
-        })
+        });
+
+        console.log("login was successful");
     };
 
     return (

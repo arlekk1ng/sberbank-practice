@@ -19,6 +19,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("users")
 @CrossOrigin(origins = "*", maxAge = 3600)
+@Slf4j
 public class UserController {
     private final UserService userService;
     private final CartService cartService;
@@ -114,6 +115,8 @@ public class UserController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> addProductInCart(
             @PathVariable long userId, @RequestBody Product product) throws URISyntaxException {
+        log.info("addProductInCart begin");
+
         Optional<User> userOptional = userService.findById(userId);
         if (userOptional.isEmpty()) {
             return ResponseEntity.notFound().build();

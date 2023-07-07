@@ -19,7 +19,6 @@ const login = (login) => {
             password,
         })
         .then((response) => {
-            console.log(response)
             if (response.data.accessToken) {
                 localStorage.setItem("user", JSON.stringify(response.data));
             }
@@ -29,8 +28,9 @@ const login = (login) => {
 };
 
 const logout = () => {
-    console.log("logout")
     localStorage.removeItem("user");
+
+    console.log("logout was successful");
 };
 
 const authService = {

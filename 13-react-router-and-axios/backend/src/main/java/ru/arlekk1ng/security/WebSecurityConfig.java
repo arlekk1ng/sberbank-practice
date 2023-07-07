@@ -1,5 +1,6 @@
 package ru.arlekk1ng.security;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.arlekk1ng.security.jwt.AuthEntryPointJwt;
 import ru.arlekk1ng.security.jwt.AuthTokenFilter;
 import ru.arlekk1ng.security.services.UserDetailsServiceImpl;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
+@Slf4j
 public class WebSecurityConfig {
 
     /**
@@ -33,12 +35,13 @@ public class WebSecurityConfig {
                                            AuthEntryPointJwt unauthorizedHandler,
                                            UserDetailsServiceImpl userDetailsService) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+                // .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS, "/products/**").permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS, "/users/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 

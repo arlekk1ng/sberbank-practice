@@ -33,6 +33,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        log.error("ServletPath: " + request.getServletPath());
+        log.error("Method: " + request.getMethod());
+        log.error("заголовок Authorization: " + request.getHeader("Authorization"));
+        log.error("--------------------");
+
         try {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {

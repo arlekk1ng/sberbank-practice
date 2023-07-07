@@ -1,5 +1,6 @@
 import {Button, Form, Input, Select,} from 'antd';
 import authService from "../services/auth.service";
+import {useNavigate} from "react-router-dom";
 
 const { Option } = Select;
 
@@ -36,9 +37,14 @@ const tailFormItemLayout = {
 };
 
 const RegistrationPage = () => {
+    const navigate = useNavigate();
+
     const [form] = Form.useForm();
     const onFinish = (values) => {
         authService.register(values);
+
+        navigate("/api/auth/signin");
+        console.log("registration was successful");
     };
 
     return (

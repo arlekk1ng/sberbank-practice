@@ -25,13 +25,9 @@ const addProductInUserCart = (userId, product, dispatch) => {
   return axios.post(API_URL + `/users/${userId}/cart/products`, product,  {headers: authHeader()})
     .then(
       (response) => {
-        console.log("then in addProductInUserCart");
         getProductsFromUserCart(userId, dispatch);
       },
       (error) => {
-        console.log("error in addProductInUserCart");
-        console.log({headers: authHeader()})
-        console.log(userId, product, dispatch);
         const _content = (error.response && error.response.data) ||
           error.message ||
           error.toString();

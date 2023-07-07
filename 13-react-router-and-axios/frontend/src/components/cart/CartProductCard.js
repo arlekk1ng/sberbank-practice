@@ -4,7 +4,8 @@ import userService from "../../services/userService";
 import {useDispatch, useSelector} from "react-redux";
 
 const CartProductCard = ({cartProduct}) => {
-  const user = useSelector(state => state.user.value);
+  // const user = useSelector(state => state.user.value);
+  const user = useSelector(state => state.auth.user);
   const cartProducts = useSelector(state => state.cartProducts.value);
 
   const dispatch = useDispatch();

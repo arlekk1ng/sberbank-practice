@@ -8,7 +8,7 @@ const defaultUser = {
 }
 
 const initialState = user
-    ? {isLoggedIn: true, user}
+    ? {isLoggedIn: true, user: user}
     : {isLoggedIn: false, user: defaultUser};
 
 export const authSlice = createSlice({

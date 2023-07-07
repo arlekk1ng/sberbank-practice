@@ -9,7 +9,7 @@ export default configureStore({
   reducer: {
     storeProducts: storeProductsReducer,
     cartProducts: cartProductsReducer,
-    user: userReducer,
+    // user: userReducer,
     auth: authReducer,
   }
 })

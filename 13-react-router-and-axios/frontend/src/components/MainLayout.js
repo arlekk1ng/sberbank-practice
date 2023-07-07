@@ -3,12 +3,14 @@ import {Avatar, Breadcrumb, Button, Divider, Layout, Menu, Space, theme} from 'a
 import {Route, Routes} from "react-router-dom";
 import NotFoundPage from "../pages/NotFoundPage";
 import React from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import StoreProductsMain from "./store/StoreProductsMain";
 import CartProductsMain from "./cart/CartProductsMain";
 import RegistrationPage from "../pages/RegistrationPage";
 import LoginPage from "../pages/LoginPage";
 import authService from "../services/auth.service";
+import productService from "../services/productService";
+import userService from "../services/userService";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -22,7 +24,8 @@ function getItem(label, key, icon, children) {
 }
 
 const MainLayout = () => {
-  const user = useSelector(state => state.auth.user);
+  const stateAuth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   const items = [
     getItem('Профиль', 'profile', <UserOutlined />, [
@@ -71,38 +74,43 @@ const MainLayout = () => {
             background: colorBgContainer,
           }}
         >
-          <Space style={{paddingLeft: "15px"}}>
+          <Space style={{padding: "0 15px"}}>
             <Button
-              href={"http://localhost:3000/products"}
-              // shape={"round"}
-              // type={"link"}
+                href={"http://localhost:3000/products"}
+                onClick={() => productService.getStoreProducts(dispatch)}
             >
               Продукты
             </Button>
 
             <Button
-              href={"http://localhost:3000/users/" + user.id + "/cart/products"}
-              // shape={"round"}
-              // type={"link"}
+                href={"http://localhost:3000/users/" + stateAuth.user.id + "/cart/products"}
+                onClick={() => userService.getProductsFromUserCart(stateAuth.user.id, dispatch)}
             >
               Корзина
             </Button>
 
-            <Button
-                href={"http://localhost:3000/api/auth/signin"}
-            >
-              Войти
-            </Button>
-            <Button
-                href={"http://localhost:3000/api/auth/signup"}
-            >
-              Зарегистрироваться
-            </Button>
-            <Button
-              onClick={authService.logout}
-            >
-              Выйти
-            </Button>
+            <div>
+              <Button
+                  href={"http://localhost:3000/api/auth/signin"}
+              >
+                Войти
+              </Button>
+
+              <Button
+                  href={"http://localhost:3000/api/auth/signup"}
+              >
+                Зарегистрироваться
+              </Button>
+
+              <Button
+                  onClick={authService.logout}
+                  disabled={!stateAuth.isLoggedIn}
+                  href={"http://localhost:3000/api/auth/signin"}
+              >
+                Выйти
+              </Button>
+            </div>
+
           </Space>
 
         </Header>
@@ -118,7 +126,7 @@ const MainLayout = () => {
             }}
           >
             <Breadcrumb.Item>Пользователь</Breadcrumb.Item>
-            <Breadcrumb.Item>{user.username}</Breadcrumb.Item>
+            <Breadcrumb.Item>{stateAuth.user.username}</Breadcrumb.Item>
           </Breadcrumb>
 
           <div
@@ -130,11 +138,12 @@ const MainLayout = () => {
           >
 
             <Routes>
-              <Route path={"/api/auth/signup"} element={<RegistrationPage />}/>
               <Route path={"/api/auth/signin"} element={<LoginPage />}/>
+              <Route path={"/api/auth/signup"} element={<RegistrationPage />}/>
+              <Route index />
 
               <Route path={"/products"} element={<StoreProductsMain />}/>
-              <Route path={`/users/${user.id}/cart/products`} element={<CartProductsMain />}/>
+              <Route path={`/users/${stateAuth.user.id}/cart/products`} element={<CartProductsMain />}/>
               <Route path={"*"} element={<NotFoundPage />}/>
             </Routes>
 
