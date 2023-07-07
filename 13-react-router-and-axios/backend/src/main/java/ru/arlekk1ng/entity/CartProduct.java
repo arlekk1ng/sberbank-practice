@@ -23,7 +23,7 @@ public class CartProduct {
     private Product product;
 
     @Column(nullable = false)
-    private int productCount;
+    private int productCountInCart;
 
     @Override
     public String toString() {
@@ -31,7 +31,7 @@ public class CartProduct {
                 "id=" + id +
                 ", cartId=" + cart.getId() +
                 ", productName=" + product.getName() +
-                ", productCount=" + productCount +
+                ", productCountInCart=" + productCountInCart +
                 '}';
     }
 }

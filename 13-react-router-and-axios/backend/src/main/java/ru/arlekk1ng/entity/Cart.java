@@ -21,7 +21,7 @@ public class Cart {
 
     @OneToOne(mappedBy = "cart")
     @JsonIgnore
-    private Client client;
+    private User user;
 
     @Override
     public String toString() {

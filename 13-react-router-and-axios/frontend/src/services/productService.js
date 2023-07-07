@@ -1,13 +1,12 @@
 import axios from "axios";
-import {set} from "../slices/storeProductsSlice";
+import {setStoreProducts} from "../slices/storeProductsSlice";
+import {API_URL} from "./constants";
 
-const API_URL = "http://localhost:8080/products";
-
-const getProducts = (dispatch) => {
-  return axios.get(API_URL)
+const getStoreProducts = (dispatch) => {
+  return axios.get(API_URL + "/products")
     .then(
       (response) => {
-        dispatch(set(response.data));
+        dispatch(setStoreProducts(response.data));
       },
       (error) => {
         const _content = (error.response && error.response.data) ||
@@ -16,16 +15,16 @@ const getProducts = (dispatch) => {
 
         console.error(_content)
 
-        dispatch(set([]));
+        dispatch(setStoreProducts([]));
       }
     );
 };
 
-const addProduct = (product, dispatch) => {
-  return axios.post(API_URL, product)
+const addProductInStore = (product, dispatch) => {
+  return axios.post(API_URL + "/products", product)
     .then(
       (response) => {
-        getProducts(dispatch);
+        getStoreProducts(dispatch);
       },
       (error) => {
         const _content = (error.response && error.response.data) ||
@@ -37,11 +36,29 @@ const addProduct = (product, dispatch) => {
     );
 };
 
-const updateProduct = (id, product, dispatch) => {
-  return axios.put(API_URL + `/${id}`, product)
+const updateStoreProduct = (productId, updProduct, dispatch) => {
+  return axios.put(API_URL + `/products/${productId}`, updProduct)
     .then(
       (response) => {
-        getProducts(dispatch);
+        if (response.data) {
+          getStoreProducts(dispatch);
+        }
+      },
+      (error) => {
+        const _content = (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+
+        console.error(_content)
+      }
+    );
+};
+
+const deleteStoreProduct = (productId, dispatch) => {
+  return axios.delete(API_URL + `/products/${productId}`)
+    .then(
+      (response) => {
+        getStoreProducts(dispatch);
       },
       (error) => {
         const _content = (error.response && error.response.data) ||
@@ -54,9 +71,10 @@ const updateProduct = (id, product, dispatch) => {
 };
 
 const productService = {
-  getProducts,
-  addProduct,
-  updateProduct,
+  getStoreProducts,
+  addProductInStore,
+  updateStoreProduct,
+  deleteStoreProduct,
 };
 
 export default productService;

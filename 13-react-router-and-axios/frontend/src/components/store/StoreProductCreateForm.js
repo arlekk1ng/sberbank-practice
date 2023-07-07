@@ -1,11 +1,11 @@
 import {Button, Form, Input, InputNumber, Modal} from 'antd';
 import {useState} from 'react';
-import {useDispatch} from "react-redux";
 import productService from "../../services/productService";
-
+import {useDispatch} from "react-redux";
 
 const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
   const [form] = Form.useForm();
+
   return (
     <Modal
       open={open}
@@ -58,7 +58,7 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
         </Form.Item>
 
         <Form.Item
-          name="count"
+          name="countInStore"
           label="Количестсво"
           rules={[
             {
@@ -76,11 +76,12 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
 };
 
 const StoreProductCreateForm = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
+
   const onCreate = (product) => {
-    productService.addProduct(product, dispatch)
+    productService.addProductInStore(product, dispatch);
     setOpen(false);
   };
 

@@ -6,13 +6,13 @@ export const storeProductsSlice = createSlice({
     value: []
   },
   reducers: {
-    set: (state, action) => {
+    setStoreProducts: (state, action) => {
       state.value = action.payload;
     },
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { set } = storeProductsSlice.actions
+export const { setStoreProducts } = storeProductsSlice.actions
 
 export default storeProductsSlice.reducer

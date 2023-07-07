@@ -5,8 +5,9 @@ import {useDispatch} from "react-redux";
 import productService from "../../services/productService";
 
 
-const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
+const CollectionCreateForm = ({ open, onCreate, onCancel, product }) => {
   const [form] = Form.useForm();
+
   return (
     <Modal
       open={open}
@@ -40,8 +41,9 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
               message: 'Введите наименование продукта',
             },
           ]}
+          initialValue={product.name}
         >
-          <Input />
+          <Input allowClear />
         </Form.Item>
 
         <Form.Item
@@ -53,13 +55,13 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
               message: 'Введите цену продукта',
             },
           ]}
-          initialValue={0}
+          initialValue={product.price}
         >
           <InputNumber min={0} />
         </Form.Item>
 
         <Form.Item
-          name="count"
+          name="countInStore"
           label="Количестсво"
           rules={[
             {
@@ -67,7 +69,7 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
               message: 'Введите количество продукта',
             },
           ]}
-          initialValue={0}
+          initialValue={product.countInStore}
         >
           <InputNumber min={0} />
         </Form.Item>
@@ -76,14 +78,17 @@ const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
   );
 };
 
-const StoreProductEditForm = ({productId}) => {
-  const dispatch = useDispatch()
+const StoreProductEditForm = ({product}) => {
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
-  const onCreate = (product) => {
-    productService.updateProduct(productId, product, dispatch);
+
+  const onCreate = (updProduct) => {
+    // productService.updateProduct(productId, product, dispatch);
     // сделать апдейт в cartProductSlice
     // dispatch(updateProduct(product));
+
+    productService.updateStoreProduct(product.id, updProduct, dispatch);
     setOpen(false);
   };
 
@@ -102,6 +107,8 @@ const StoreProductEditForm = ({productId}) => {
         onCancel={() => {
           setOpen(false);
         }}
+
+        product={product}
       />
     </div>
   );

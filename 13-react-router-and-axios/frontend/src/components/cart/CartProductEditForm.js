@@ -2,7 +2,7 @@ import {Button, Form, Input, InputNumber, Modal} from 'antd';
 import {useState} from 'react';
 import {EditOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
-import clientService from "../../services/clientService";
+import userService from "../../services/userService";
 
 const CollectionCreateForm = ({ open, onCreate, onCancel }) => {
   const [form] = Form.useForm();
@@ -53,13 +53,13 @@ const CartProductEditForm = ({cartProduct}) => {
 
   const [open, setOpen] = useState(false);
   const onCreate = (values) => {
-    // cartProduct.productCount = values.count;
+    // cartProduct.productCountInCart = values.countInStore;
     const newProductCount = {
       ...cartProduct,
       productCount: values.count
     }
 
-    clientService.changeProductCountInCart(client.id, cartProduct.product.id, newProductCount, dispatch);
+    userService.changeProductCountInCart(client.id, cartProduct.product.id, newProductCount, dispatch);
     setOpen(false);
   };
 

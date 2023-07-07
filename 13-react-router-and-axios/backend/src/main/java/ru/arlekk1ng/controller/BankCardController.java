@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.arlekk1ng.entity.BankCard;
-import ru.arlekk1ng.entity.Client;
 import ru.arlekk1ng.repository.BankCardRepository;
 
 import java.net.URI;

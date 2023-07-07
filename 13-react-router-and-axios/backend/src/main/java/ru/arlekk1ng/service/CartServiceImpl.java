@@ -17,7 +17,10 @@ public class CartServiceImpl implements CartService {
     private final CartProductRepository cartProductRepository;
 
     @Autowired
-    public CartServiceImpl(CartRepository cartRepository, CartProductRepository cartProductRepository) {
+    public CartServiceImpl(
+            CartRepository cartRepository,
+            CartProductRepository cartProductRepository
+    ) {
         this.cartRepository = cartRepository;
         this.cartProductRepository = cartProductRepository;
     }
@@ -28,31 +31,31 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartProduct addProduct(Cart cart, Product product) {
+    public CartProduct addProductInCart(Cart cart, Product product) {
         Optional<CartProduct> cartProductOptional
                 = cartProductRepository.findCartProductByCartAndProduct(cart, product);
 
         CartProduct cartProduct;
         if (cartProductOptional.isPresent()) {
             cartProduct = cartProductOptional.get();
-            cartProduct.setProductCount(cartProduct.getProductCount() + 1);
+            cartProduct.setProductCountInCart(cartProduct.getProductCountInCart() + 1);
         } else {
             cartProduct = new CartProduct();
             cartProduct.setCart(cart);
             cartProduct.setProduct(product);
-            cartProduct.setProductCount(1);
+            cartProduct.setProductCountInCart(1);
         }
 
         return cartProductRepository.save(cartProduct);
     }
 
     @Override
-    public List<CartProduct> getProducts(Cart cart) {
+    public List<CartProduct> getProductsInCart(Cart cart) {
         return cartProductRepository.findCartProductsByCart(cart);
     }
 
     @Override
-    public boolean changeProductCount(Cart cart, long productId, int count) {
+    public boolean changeProductCountInCart(Cart cart, long productId, int newCountInCart) {
         Optional<CartProduct> cartProductOptional
                 = cartProductRepository.findCartProductByCartAndProduct_Id(cart, productId);
 
@@ -61,13 +64,13 @@ public class CartServiceImpl implements CartService {
         }
 
         CartProduct cartProduct = cartProductOptional.get();
-        cartProduct.setProductCount(count);
+        cartProduct.setProductCountInCart(newCountInCart);
         cartProductRepository.save(cartProduct);
         return true;
     }
 
     @Override
-    public boolean deleteProduct(Cart cart, long productId) {
+    public boolean deleteProductInCart(Cart cart, long productId) {
         Optional<CartProduct> cartProductOptional
                 = cartProductRepository.findCartProductByCartAndProduct_Id(cart, productId);
 
@@ -78,5 +81,12 @@ public class CartServiceImpl implements CartService {
         CartProduct cartProduct = cartProductOptional.get();
         cartProductRepository.deleteById(cartProduct.getId());
         return true;
+    }
+
+    @Override
+    public void deleteAllProductsInCart(Cart cart) {
+        for (CartProduct cartProduct: getProductsInCart(cart)) {
+            cartProductRepository.deleteById(cartProduct.getId());
+        }
     }
 }

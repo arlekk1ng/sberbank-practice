@@ -3,13 +3,13 @@ import {useSelector} from "react-redux";
 import StoreProductCard from "./StoreProductCard";
 
 const StoreProductsList = () => {
-  const storeProducts = useSelector(state => state.storeProducts.value)
+  const storeProducts = useSelector(state => state.storeProducts.value);
 
   return (
     <List
       grid={{
         gutter: 16,
-        column: 3,
+        // column: 3,
       }}
       dataSource={storeProducts}
       renderItem={(item) => {

@@ -1,11 +1,13 @@
-import {PlusOutlined} from '@ant-design/icons';
+import {CloseOutlined, PlusOutlined} from '@ant-design/icons';
 import {Button, Card} from 'antd';
 import StoreProductEditForm from "./StoreProductEditForm";
+import userService from "../../services/userService";
 import {useDispatch, useSelector} from "react-redux";
-import clientService from "../../services/clientService";
+import productService from "../../services/productService";
 
 const StoreProductCard = ({product}) => {
-  const client = useSelector(state => state.client.value);
+  const user = useSelector(state => state.user.value);
+
   const dispatch = useDispatch();
 
   return (
@@ -20,19 +22,27 @@ const StoreProductCard = ({product}) => {
         />
       }
       actions={[
+        <StoreProductEditForm product={product}/>,
         <Button
           icon={<PlusOutlined />}
           type="text"
-          onClick={() => clientService.addProductInCart(client.id, product, dispatch)}
+          onClick={() => userService.addProductInUserCart(user.id, product, dispatch)}
         />,
-        <StoreProductEditForm productId={product.id}/>,
       ]}
+
+      extra={
+        <Button
+          icon={<CloseOutlined />}
+          onClick={() => productService.deleteStoreProduct(product.id, dispatch)}
+        />
+      }
+      hoverable={true}
     >
 
       <div>
         <p><b>{product.name}</b></p>
         <p>{product.price} руб.</p>
-        <p>{product.count} шт.</p>
+        <p>{product.countInStore} шт.</p>
       </div>
 
     </Card>

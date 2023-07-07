@@ -9,8 +9,9 @@ import java.util.List;
 public interface CartService {
 
     Cart save(Cart cart);
-    CartProduct addProduct(Cart cart, Product product);
-    List<CartProduct> getProducts(Cart cart);
-    boolean changeProductCount(Cart cart, long productId, int count);
-    boolean deleteProduct(Cart cart, long productId);
+    CartProduct addProductInCart(Cart cart, Product product);
+    List<CartProduct> getProductsInCart(Cart cart);
+    boolean changeProductCountInCart(Cart cart, long productId, int newCountInCart);
+    boolean deleteProductInCart(Cart cart, long productId);
+    void deleteAllProductsInCart(Cart cart);
 }

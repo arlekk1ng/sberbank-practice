@@ -19,9 +19,9 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
     @Column(nullable = false)
-    private int count;
+    private int countInStore;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade=CascadeType.ALL)
     @JsonIgnore
     private List<CartProduct> cartProductList;
 
@@ -31,7 +31,7 @@ public class Product {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
-                ", count=" + count +
+                ", countInStore=" + countInStore +
                 '}';
     }
 }

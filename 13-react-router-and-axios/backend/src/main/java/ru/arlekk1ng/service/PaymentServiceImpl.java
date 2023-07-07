@@ -40,24 +40,25 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         BankCard bankCard = bankCardOptional.get();
-        Product product;
-        int countInStock, neededCount;
-        BigDecimal multiply, subtract;
 
         List<CartProduct> cartProductList = cartProductRepository.findCartProductsByCart(cart);
-        for (CartProduct cartProduct: cartProductList) {
-            product = cartProduct.getProduct();
-            countInStock = product.getCount();
-            neededCount = cartProduct.getProductCount();
+        if (cartProductList.size() == 0) {
+            return false;
+        }
 
-            if (countInStock < neededCount) {
+        for (CartProduct cartProduct: cartProductList) {
+            Product product = cartProduct.getProduct();
+            int countInStore = product.getCountInStore();
+            int neededCount = cartProduct.getProductCountInCart();
+
+            if (countInStore < neededCount) {
                 throw new RuntimeException("товара " + product + " не хватает на складе");
             }
 
-            product.setCount(countInStock - neededCount);
+            product.setCountInStore(countInStore - neededCount);
 
-            multiply = product.getPrice().multiply(BigDecimal.valueOf(neededCount));
-            subtract = bankCard.getBalance().subtract(multiply);
+            BigDecimal multiply = product.getPrice().multiply(BigDecimal.valueOf(neededCount));
+            BigDecimal subtract = bankCard.getBalance().subtract(multiply);
 
             if (subtract.signum() == -1) {
                 throw new RuntimeException("не достаточно баланса на банковской карте");

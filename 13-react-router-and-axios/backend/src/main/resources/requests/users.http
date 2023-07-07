@@ -1,6 +1,6 @@
 ###
 # Регистрация нового клиента
-POST localhost:8080/clients
+POST localhost:8080/users
 Content-Type: application/json
 
 {
@@ -12,15 +12,15 @@ Content-Type: application/json
 
 ###
 # Получение списка всех клиентов
-GET localhost:8080/clients
+GET localhost:8080/users
 
 ###
 # Получение клиента по его id
-GET localhost:8080/clients/1
+GET localhost:8080/users/1
 
 ###
 # Изменение клиента по его id
-PUT localhost:8080/clients/1
+PUT localhost:8080/users/1
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ###
 # Добавление одной единицы продукта клиенту по id продукта
-POST localhost:8080/clients/1/cart/products
+POST localhost:8080/users/1/cart/products
 Content-Type: application/json
 
 {
@@ -42,25 +42,29 @@ Content-Type: application/json
 
 ###
 # Получение списка всех продуктов у клиента
-GET localhost:8080/clients/1/cart/products
+GET localhost:8080/users/1/cart/products
 
 ###
 # Изменение количества продукта у клиента
-PUT localhost:8080/clients/1/cart/products/1
+PUT localhost:8080/users/1/cart/products/3
 Content-Type: application/json
 
 {
-  "productCount": 3
+  "productCountInCart": 1
 }
 
 ###
 # Удаление продукта из корзины у клиента
-DELETE localhost:8080/clients/1/cart/products/1
+DELETE localhost:8080/users/1/cart/products/2
+
+###
+# Удаление всех продуктов из корзины у клиента
+DELETE localhost:8080/users/1/cart/products
 
 
 ###
 # Оплата корзины клиента по номеру банк. карты
-PUT localhost:8080/clients/1/cart/payment
+PUT localhost:8080/users/1/cart/payment
 Content-Type: application/json
 
 {

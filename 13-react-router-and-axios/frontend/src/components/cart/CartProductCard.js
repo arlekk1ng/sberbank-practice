@@ -1,16 +1,28 @@
+import {CloseOutlined, MinusOutlined, PlusOutlined} from '@ant-design/icons';
 import {Button, Card} from 'antd';
-import CartProductEditForm from "./CartProductEditForm";
+import userService from "../../services/userService";
 import {useDispatch, useSelector} from "react-redux";
-import clientService from "../../services/clientService";
-import {CloseOutlined} from "@ant-design/icons";
-
 
 const CartProductCard = ({cartProduct}) => {
-  const client = useSelector(state => state.client.value);
+  const user = useSelector(state => state.user.value);
+  const cartProducts = useSelector(state => state.cartProducts.value);
+
   const dispatch = useDispatch();
 
-  const deleteProductInCart = () => {
-    clientService.deleteProductInCart(client.id, cartProduct.product.id, dispatch)
+  const increaseProductCountByOne = () => {
+    const newCartProduct = {
+      productCountInCart: cartProduct.productCountInCart + 1
+    };
+    userService.changeProductCountInCart(
+      user.id, cartProduct.product.id, newCartProduct, dispatch, cartProducts);
+  };
+
+  const reduceProductCountByOne = () => {
+    const newCartProduct = {
+      productCountInCart: cartProduct.productCountInCart - 1
+    };
+    userService.changeProductCountInCart(
+      user.id, cartProduct.product.id, newCartProduct, dispatch, cartProducts);
   };
 
   return (
@@ -26,18 +38,30 @@ const CartProductCard = ({cartProduct}) => {
       }
       actions={[
         <Button
-          icon={<CloseOutlined />}
+          icon={<PlusOutlined />}
           type="text"
-          onClick={deleteProductInCart}
+          onClick={increaseProductCountByOne}
         />,
-        <CartProductEditForm cartProduct={cartProduct}/>,
+        <Button
+          icon={<MinusOutlined />}
+          type="text"
+          onClick={reduceProductCountByOne}
+        />,
       ]}
+
+      extra={
+        <Button
+          icon={<CloseOutlined />}
+          onClick={() => userService.deleteProductInUserCart(user.id, cartProduct.product.id, dispatch)}
+        />
+      }
+      hoverable={true}
     >
 
       <div>
         <p><b>{cartProduct.product.name}</b></p>
         <p>{cartProduct.product.price} руб.</p>
-        <p>{cartProduct.productCount} шт.</p>
+        <p>{cartProduct.productCountInCart} шт.</p>
       </div>
 
     </Card>

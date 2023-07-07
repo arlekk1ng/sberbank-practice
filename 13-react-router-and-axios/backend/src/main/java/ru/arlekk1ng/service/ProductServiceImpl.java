@@ -19,7 +19,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product save(Product product) {
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+        return savedProduct;
     }
 
     @Override
@@ -34,7 +35,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean update(Product product) {
+        Optional<Product> productOptional = findById(product.getId());
+        if (productOptional.isEmpty()) {
+            return false;
+        }
+
         productRepository.save(product);
         return true;
+    }
+
+    @Override
+    public void deleteById(long id) {
+        productRepository.deleteById(id);
     }
 }
