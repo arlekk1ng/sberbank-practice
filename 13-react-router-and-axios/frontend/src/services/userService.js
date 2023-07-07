@@ -1,44 +1,10 @@
 import axios from "axios";
 import {setCartProducts} from "../slices/cartProductsSlice";
 import {API_URL} from "./constants";
-
-const addClient = (client, dispatch) => {
-  return axios.post(API_URL, client)
-    .then(
-      (response) => {
-        getClient(1, dispatch);
-      },
-      (error) => {
-        const _content = (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-
-        console.error(_content)
-      }
-    );
-};
-
-const getClient = (userId, dispatch) => {
-  return axios.get(API_URL + `/${userId}`)
-    .then(
-      (response) => {
-        // dispatch(setClient(response.data));
-      },
-      (error) => {
-        const _content = (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-
-        console.error(_content)
-
-        // dispatch(setClient({}));
-      }
-    );
-}
-
+import authHeader from "./auth-header";
 
 const getProductsFromUserCart = (userId, dispatch) => {
-  return axios.get(API_URL + `/users/${userId}/cart/products`)
+  return axios.get(API_URL + `/users/${userId}/cart/products`,  {headers: authHeader()})
     .then(
       (response) => {
         dispatch(setCartProducts(response.data));
@@ -56,12 +22,16 @@ const getProductsFromUserCart = (userId, dispatch) => {
 };
 
 const addProductInUserCart = (userId, product, dispatch) => {
-  return axios.post(API_URL + `/users/${userId}/cart/products`, product)
+  return axios.post(API_URL + `/users/${userId}/cart/products`, product,  {headers: authHeader()})
     .then(
       (response) => {
+        console.log("then in addProductInUserCart");
         getProductsFromUserCart(userId, dispatch);
       },
       (error) => {
+        console.log("error in addProductInUserCart");
+        console.log({headers: authHeader()})
+        console.log(userId, product, dispatch);
         const _content = (error.response && error.response.data) ||
           error.message ||
           error.toString();
@@ -72,7 +42,7 @@ const addProductInUserCart = (userId, product, dispatch) => {
 };
 
 const changeProductCountInCart = (userId, productId, cartProduct, dispatch, cartProducts) => {
-  return axios.put(API_URL + `/users/${userId}/cart/products/${productId}`, cartProduct)
+  return axios.put(API_URL + `/users/${userId}/cart/products/${productId}`, cartProduct,  {headers: authHeader()})
     .then(
       (response) => {
         const newCartProducts = cartProducts.map(value => {
@@ -99,7 +69,7 @@ const changeProductCountInCart = (userId, productId, cartProduct, dispatch, cart
 };
 
 const deleteProductInUserCart = (userId, productId, dispatch) => {
-  return axios.delete(API_URL + `/users/${userId}/cart/products/${productId}`)
+  return axios.delete(API_URL + `/users/${userId}/cart/products/${productId}`,  {headers: authHeader()})
     .then(
       (response) => {
         getProductsFromUserCart(userId, dispatch);
@@ -115,8 +85,6 @@ const deleteProductInUserCart = (userId, productId, dispatch) => {
 };
 
 const userService = {
-  addClient,
-  getClient,
   getProductsFromUserCart,
   addProductInUserCart,
   changeProductCountInCart,

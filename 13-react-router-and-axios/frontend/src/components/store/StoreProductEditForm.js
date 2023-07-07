@@ -4,7 +4,6 @@ import {EditOutlined} from "@ant-design/icons";
 import {useDispatch} from "react-redux";
 import productService from "../../services/productService";
 
-
 const CollectionCreateForm = ({ open, onCreate, onCancel, product }) => {
   const [form] = Form.useForm();
 
@@ -84,10 +83,6 @@ const StoreProductEditForm = ({product}) => {
   const [open, setOpen] = useState(false);
 
   const onCreate = (updProduct) => {
-    // productService.updateProduct(productId, product, dispatch);
-    // сделать апдейт в cartProductSlice
-    // dispatch(updateProduct(product));
-
     productService.updateStoreProduct(product.id, updProduct, dispatch);
     setOpen(false);
   };

@@ -1,7 +1,9 @@
 package ru.arlekk1ng.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.arlekk1ng.entity.*;
 import ru.arlekk1ng.service.CartService;
@@ -91,6 +93,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/cart/payment")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Void> pay(@PathVariable long userId, @RequestBody BankCard bankCard) {
         Optional<User> userOptional = userService.findById(userId);
         if (userOptional.isEmpty()) {
@@ -108,6 +111,7 @@ public class UserController {
     }
     
     @PostMapping("/{userId}/cart/products")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> addProductInCart(
             @PathVariable long userId, @RequestBody Product product) throws URISyntaxException {
         Optional<User> userOptional = userService.findById(userId);
@@ -129,6 +133,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/cart/products")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getProductsInCart(@PathVariable long userId) {
         Optional<User> userOptional = userService.findById(userId);
         if (userOptional.isEmpty()) {
@@ -142,6 +147,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/cart/products/{productId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> changeProductCountInCart(
             @PathVariable long userId, @PathVariable long productId, @RequestBody CartProduct cartProduct) {
         Optional<User> userOptional = userService.findById(userId);
@@ -161,6 +167,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}/cart/products/{productId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteProductInCart(@PathVariable long userId, @PathVariable long productId) {
         Optional<User> userOptional = userService.findById(userId);
         if (userOptional.isEmpty()) {
@@ -178,6 +185,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}/cart/products")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteAllProductsInCart(@PathVariable long userId) {
         Optional<User> userOptional = userService.findById(userId);
         if (userOptional.isEmpty()) {

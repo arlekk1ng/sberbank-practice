@@ -1,6 +1,7 @@
 package ru.arlekk1ng.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.arlekk1ng.entity.Product;
 import ru.arlekk1ng.service.ProductService;
@@ -21,6 +22,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> add(@RequestBody Product product) throws URISyntaxException {
         Product savedProduct = productService.save(product);
         return ResponseEntity
@@ -43,12 +45,14 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public boolean update(@PathVariable long id, @RequestBody Product product) {
         product.setId(id);
         return productService.update(product);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable long id) {
         productService.deleteById(id);
         return ResponseEntity.ok().build();

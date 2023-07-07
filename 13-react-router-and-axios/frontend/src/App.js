@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     productService.getStoreProducts(dispatch);
-    userService.getProductsFromUserCart(user.id, dispatch);
+    // userService.getProductsFromUserCart(user.id, dispatch);
   }, [])
 
   return (

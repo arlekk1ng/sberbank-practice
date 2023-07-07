@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ###
 # Добавление одной единицы продукта клиенту по id продукта
-POST localhost:8080/users/1/cart/products
+POST localhost:8080/users/7/cart/products
 Content-Type: application/json
 
 {
@@ -42,7 +42,7 @@ Content-Type: application/json
 
 ###
 # Получение списка всех продуктов у клиента
-GET localhost:8080/users/1/cart/products
+GET localhost:8080/users/7/cart/products
 
 ###
 # Изменение количества продукта у клиента

@@ -6,6 +6,9 @@ import React from "react";
 import {useSelector} from "react-redux";
 import StoreProductsMain from "./store/StoreProductsMain";
 import CartProductsMain from "./cart/CartProductsMain";
+import RegistrationPage from "../pages/RegistrationPage";
+import LoginPage from "../pages/LoginPage";
+import authService from "../services/auth.service";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -19,7 +22,7 @@ function getItem(label, key, icon, children) {
 }
 
 const MainLayout = () => {
-  const user = useSelector(state => state.user.value);
+  const user = useSelector(state => state.auth.user);
 
   const items = [
     getItem('Профиль', 'profile', <UserOutlined />, [
@@ -84,6 +87,22 @@ const MainLayout = () => {
             >
               Корзина
             </Button>
+
+            <Button
+                href={"http://localhost:3000/api/auth/signin"}
+            >
+              Войти
+            </Button>
+            <Button
+                href={"http://localhost:3000/api/auth/signup"}
+            >
+              Зарегистрироваться
+            </Button>
+            <Button
+              onClick={authService.logout}
+            >
+              Выйти
+            </Button>
           </Space>
 
         </Header>
@@ -99,7 +118,7 @@ const MainLayout = () => {
             }}
           >
             <Breadcrumb.Item>Пользователь</Breadcrumb.Item>
-            <Breadcrumb.Item>{user.name}</Breadcrumb.Item>
+            <Breadcrumb.Item>{user.username}</Breadcrumb.Item>
           </Breadcrumb>
 
           <div
@@ -111,6 +130,9 @@ const MainLayout = () => {
           >
 
             <Routes>
+              <Route path={"/api/auth/signup"} element={<RegistrationPage />}/>
+              <Route path={"/api/auth/signin"} element={<LoginPage />}/>
+
               <Route path={"/products"} element={<StoreProductsMain />}/>
               <Route path={`/users/${user.id}/cart/products`} element={<CartProductsMain />}/>
               <Route path={"*"} element={<NotFoundPage />}/>

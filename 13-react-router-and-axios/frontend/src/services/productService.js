@@ -1,6 +1,7 @@
 import axios from "axios";
 import {setStoreProducts} from "../slices/storeProductsSlice";
 import {API_URL} from "./constants";
+import authHeader from "./auth-header";
 
 const getStoreProducts = (dispatch) => {
   return axios.get(API_URL + "/products")
@@ -21,7 +22,7 @@ const getStoreProducts = (dispatch) => {
 };
 
 const addProductInStore = (product, dispatch) => {
-  return axios.post(API_URL + "/products", product)
+  return axios.post(API_URL + "/products", product,  {headers: authHeader()})
     .then(
       (response) => {
         getStoreProducts(dispatch);
@@ -37,7 +38,7 @@ const addProductInStore = (product, dispatch) => {
 };
 
 const updateStoreProduct = (productId, updProduct, dispatch) => {
-  return axios.put(API_URL + `/products/${productId}`, updProduct)
+  return axios.put(API_URL + `/products/${productId}`, updProduct,  {headers: authHeader()})
     .then(
       (response) => {
         if (response.data) {
@@ -55,7 +56,7 @@ const updateStoreProduct = (productId, updProduct, dispatch) => {
 };
 
 const deleteStoreProduct = (productId, dispatch) => {
-  return axios.delete(API_URL + `/products/${productId}`)
+  return axios.delete(API_URL + `/products/${productId}`,  {headers: authHeader()})
     .then(
       (response) => {
         getStoreProducts(dispatch);
