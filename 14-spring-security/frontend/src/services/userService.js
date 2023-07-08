@@ -87,11 +87,28 @@ const deleteProductInUserCart = (userId, productId, dispatch) => {
     );
 };
 
+const deleteAllProductInUserCart = (userId, dispatch) => {
+    return axios.delete(API_URL + `/users/${userId}/cart/products`,  {headers: authHeader()})
+        .then(
+            (response) => {
+                getProductsFromUserCart(userId, dispatch);
+            },
+            (error) => {
+                const _content = (error.response && error.response.data) ||
+                    error.message ||
+                    error.toString();
+
+                console.error(_content);
+            }
+        );
+};
+
 const userService = {
   getProductsFromUserCart,
   addProductInUserCart,
   changeProductCountInCart,
   deleteProductInUserCart,
+  deleteAllProductInUserCart,
 };
 
 export default userService;

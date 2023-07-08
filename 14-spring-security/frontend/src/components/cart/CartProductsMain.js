@@ -2,19 +2,30 @@ import React, {useEffect} from 'react';
 import CartProductsList from "./CartProductsList";
 import {useDispatch, useSelector} from "react-redux";
 import userService from "../../services/userService";
+import {Button, Divider} from "antd";
+import StoreProductsSearch from "../store/StoreProductsSearch";
 
 const CartProductsMain = () => {
-  const stateAuth = useSelector(state => state.auth);
+  const user = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (stateAuth.isLoggedIn) {
-      userService.getProductsFromUserCart(stateAuth.user.id, dispatch);
-    }
+    userService.getProductsFromUserCart(user.id, dispatch);
   }, [])
+
+  const cleanCart = () => {
+    userService.deleteAllProductInUserCart(user.id, dispatch);
+  }
   
   return (
     <div>
+      <div>
+        <Button onClick={cleanCart}>
+          Очистить корзину
+        </Button>
+
+      </div>
+      <Divider />
       <CartProductsList />
     </div>
   );

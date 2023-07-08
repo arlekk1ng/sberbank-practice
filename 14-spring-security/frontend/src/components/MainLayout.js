@@ -70,13 +70,17 @@ const MainLayout = () => {
       <Layout>
         <Header
           style={{
-            padding: 0,
+            padding: "0 16px",
             background: colorBgContainer,
+
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
-          <Space style={{padding: "0 15px"}}>
+          <Space>
             <Button
-                href={"http://localhost:3000/products"}
+                href="http://localhost:3000/products"
                 onClick={() => productService.getStoreProducts(dispatch)}
             >
               Продукты
@@ -89,29 +93,29 @@ const MainLayout = () => {
             >
               Корзина
             </Button>
+          </Space>
 
-            <Space>
-              <Button
-                  href={"http://localhost:3000/api/auth/signin"}
-              >
-                Войти
-              </Button>
+          <Space>
+            <Button
+                href="http://localhost:3000/api/auth/signin"
+            >
+              Войти
+            </Button>
 
-              <Button
-                  href={"http://localhost:3000/api/auth/signup"}
-              >
-                Зарегистрироваться
-              </Button>
+            <Button
+                href="http://localhost:3000/api/auth/signup"
+                type="primary"
+            >
+              Зарегистрироваться
+            </Button>
 
-              <Button
-                  disabled={!stateAuth.isLoggedIn}
-                  href={"http://localhost:3000/api/auth/signin"}
-                  onClick={authService.logout}
-              >
-                Выйти
-              </Button>
-            </Space>
-
+            <Button
+                disabled={!stateAuth.isLoggedIn}
+                href="http://localhost:3000/api/auth/signin"
+                onClick={authService.logout}
+            >
+              Выйти
+            </Button>
           </Space>
 
         </Header>
@@ -125,15 +129,22 @@ const MainLayout = () => {
             style={{
               margin: '16px 0',
             }}
-          >
-            <Breadcrumb.Item>Пользователь</Breadcrumb.Item>
-            <Breadcrumb.Item>{stateAuth.user.username}</Breadcrumb.Item>
-          </Breadcrumb>
+
+            items={[
+              {
+                title: "Пользователь",
+              },
+              {
+                title: stateAuth.user.username,
+              }
+            ]}
+          />
 
           <div
             style={{
               padding: 24,
-              minHeight: 360,
+              // minHeight: 360,
+              minHeight: "100%",
               background: colorBgContainer,
             }}
           >
